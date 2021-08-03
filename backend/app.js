@@ -1,6 +1,7 @@
 const express = require('express');
-const cors = require('cors')
 const app = express();
+const cors = require('cors');
+const sequelize = require('./db/conexion');
 require('dotenv').config();
 
 /* Rutas utilizadas */
@@ -13,8 +14,10 @@ app.use(express.urlencoded({ extended: true}));
 app.set('port', process.env.PORT ||4000);
 
 /* Arranque del servidor. */
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT, async () => {
     try {
+        await sequelize.authenticate();
+        console.log('DB conectada correctamente');
         console.log('Server On Port', app.get('port'));
     } catch (error) {
         console.log('No se pudo iniciar. ');
