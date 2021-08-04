@@ -1,6 +1,10 @@
 //Usando como referencia la clase 20
 
-const { checkDatosAlta, checkUsuarioExistente } = require('../middlewares/usuarios.mid')
+const {
+    checkDatosAlta,
+    checkUsuarioExistente,
+    checkEmailExistente
+} = require('../middlewares/usuarios.mid')
 
 const { 
     crearUsuario,
@@ -12,9 +16,9 @@ const {
 
 /* CRUD usuarios */
 module.exports = (app) => {
-    app.post('/usuarios', checkDatosAlta, crearUsuario);
+    app.post('/usuarios', checkDatosAlta, checkEmailExistente, crearUsuario);
     app.get('/usuarios', obtenerUsuarios);
     app.get('/usuarios/:id', checkUsuarioExistente, obtenerUnUsuarios);
-    app.put('/usuarios/:id', checkUsuarioExistente, checkDatosAlta, actualizarUsuario);
+    app.put('/usuarios/:id', checkUsuarioExistente, checkEmailExistente, checkDatosAlta, actualizarUsuario);
     app.delete('/usuarios/:id', checkUsuarioExistente, eliminarUsuario);
 }
