@@ -5,7 +5,7 @@ const sequelize = require('./db/conexion');
 require('dotenv').config();
 
 /* Rutas utilizadas */
-const usuariosRoutes = require('./routes/users')
+const usuariosRoutes = require('./routes/users.routes')
 
 /* Middlewares Globales */
 app.use(express.json())
