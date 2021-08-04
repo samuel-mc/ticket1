@@ -1,15 +1,6 @@
 const db = require('../db/conexion');
 const Sequelize = require('sequelize');
 
-class Usuario {
-    
-}
-
-/* Funcion que (si es necesario) crea la tabla usuarios */
-const createTablaUsuarios = () => {
-    usuarioModel().sync();
-}
-
 /* Configuracion correspondiente al modelo de un usuario. */
 usuarioModel = () => {
     return db.define('usuario', {
@@ -50,6 +41,14 @@ usuarioModel = () => {
         createdAt: Sequelize.DATE,
         updatedAt: Sequelize.DATE
     }) 
+}
+/* Funcion que (si es necesario) crea la tabla usuarios */
+const createTablaUsuarios = () => {
+    usuarioModel().sync();
+}
+
+class Usuario {
+    
 }
 
 module.exports = { Usuario, usuarioModel}

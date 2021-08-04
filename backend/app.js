@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const sequelize = require('./db/conexion');
-require('dotenv').config();
+require('dotenv').config()
 
 /* Rutas utilizadas */
 const usuariosRoutes = require('./routes/users.routes')
@@ -11,14 +11,13 @@ const usuariosRoutes = require('./routes/users.routes')
 app.use(express.json())
 app.use(cors())
 app.use(express.urlencoded({ extended: true}));
-app.set('port', process.env.PORT ||4000);
 
 /* Arranque del servidor. */
-app.listen(process.env.PORT, async () => {
+app.listen(3030, async () => {
     try {
         await sequelize.authenticate();
         console.log('DB conectada correctamente');
-        console.log('Server On Port', app.get('port'));
+        console.log('Server On Port: ' + 3030);
     } catch (error) {
         console.log('No se pudo iniciar. ');
     }

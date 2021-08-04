@@ -1,17 +1,19 @@
 const { usuarioModel} = require('../models/usuario.models');
+const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
 
 
 const crearUsuario = async (req, res) => {
-    const { id_usuario, nombre, apellidos, email, username, password} = req.body;
+    const { nombre, apellidos, email, username, password} = req.body;
+    const id_usuario = uuidv4();
     try {
         const passHas = await bcrypt.hash(password, 10);
         usuarioModel().create({
-            id_usuario: id_usuario,
-            nombre: nombre,
-            apellidos: apellidos,
-            email: email,
-            username: username,
+            id_usuario,
+            nombre,
+            apellidos,
+            email,
+            username,
             password: passHas
         });
         res.status(201).json('Usuario creado con éxito.');
@@ -32,7 +34,7 @@ const obtenerUsuarios = async (req, res) => {
 const obtenerUnUsuarios = async (req, res) => {
     const id_usuario = req.params.id;
     try {
-        const usuario = await usuarioModel().findOne({ where: id_usuario });
+        const usuario = await usuarioModel().findOne({ where: { id_usuario } });
         res.status(200).json(usuario);
     } catch (err) {
         res.status(400).json('Problema al leer al usuario: ' + err.message);
@@ -40,7 +42,8 @@ const obtenerUnUsuarios = async (req, res) => {
 }
 
 const actualizarUsuario = async (req, res) => {
-    const { id_usuario } = req.params.id;
+    const id_usuario = req.params.id;
+    console.log(id_usuario);
     const {  nombre, apellidos, email, username, password } = req.body;
     try {
         const passHas = await bcrypt.hash(password, 10);
@@ -55,21 +58,21 @@ const actualizarUsuario = async (req, res) => {
                 where: { id_usuario } 
             }
         );
+        res.status(200).json('Usuario actualizado con exito.');
     } catch (err) {
         res.status(400).json('Problema al actualizar el usuario: ' + err.message);
     }
 }
 
 const eliminarUsuario = async (req, res) => {
-    const { id_usuario } = req.params.id;
+    const id_usuario = req.params.id;
     try {
-        const passHas = await bcrypt.hash(password, 10);
-        usuarioModel().update({ eliminado: 0 }, { where: { id_usuario } });
+        usuarioModel().update({ eliminado: 1 }, { where: { id_usuario } });
+        res.send('Usuario eliminado con exito');
     } catch (err) {
         res.status(400).json('Problema al eliminar el usuario: ' + err.message);
     }
 }
-
 
 module.exports = { 
     crearUsuario,
