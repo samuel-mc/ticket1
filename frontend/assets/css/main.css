@@ -30,6 +30,7 @@
 body, html {
 	height: 100%;
 	font-family: Ubuntu-Regular, sans-serif;
+  background-color: #134074;
 }
 
 /*---------------------------------------------*/
@@ -389,4 +390,46 @@ iframe {
     padding-left: 15px;
     padding-right: 15px;
   }
+}
+
+/*////////////////////////////////////////////////////////////////////
+[Index] */
+.container {
+  margin: 50px;
+  background-color: #fff;
+  padding: 50px;
+  border-radius: 10px;
+}
+@media (max-width: 576px) {
+  .container{
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+table {
+  width: 100%;
+  border: 1px solid #000;
+}
+
+table th {
+  padding: 5px;
+  border: 1px solid #000;
+  /* text-align: center; */
+}
+
+table tr {
+  border: 1px solid #000;
+}
+
+table td {
+  border: 1px solid #000;
+}
+
+h3 {
+  margin: 10px;
+}
+
+select #meses{
+  size: 10px;
 }

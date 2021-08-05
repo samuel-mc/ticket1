@@ -1,6 +1,8 @@
-const { usuarioModel} = require('../models/usuario.models');
+const { usuarioModel, getByEmailUsername} = require('../models/usuario.models');
+const { crearJWT } = require('../services/crearJWT.service');
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken')
 
 
 const crearUsuario = async (req, res) => {
@@ -74,10 +76,30 @@ const eliminarUsuario = async (req, res) => {
     }
 }
 
+const loginUsuario = async (req, res) => {
+    try {
+        const usuario = await getByEmailUsername(req.body.email, req.body.username);
+        if (!usuario) {
+             res.status(400).json('Usuario no existente.')
+        }             
+        const passwordDB = usuario.dataValues.password;
+        const passwordCorecto = bcrypt.compareSync(req.body.password, passwordDB);
+        if (!passwordCorecto) {
+            return res.status(400).json('Contraseña incorrecta.');
+        }
+        const token = await crearJWT(usuario.dataValues.id_usuario);
+        return res.status(200).json(token);
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 module.exports = { 
     crearUsuario,
     obtenerUsuarios,
     obtenerUnUsuarios,
     actualizarUsuario,
-    eliminarUsuario
+    eliminarUsuario,
+
+    loginUsuario
 }

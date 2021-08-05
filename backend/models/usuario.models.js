@@ -47,8 +47,18 @@ const createTablaUsuarios = () => {
     usuarioModel().sync();
 }
 
+const getByEmailUsername = (email = "", username ="") => {
+    const usuario = usuarioModel().findOne( { 
+        where: Sequelize.or (
+           { email: email },
+           { username: username}
+        )
+    })
+    return usuario;
+}
+
 class Usuario {
     
 }
 
-module.exports = { Usuario, usuarioModel}
+module.exports = { Usuario, usuarioModel, getByEmailUsername}
