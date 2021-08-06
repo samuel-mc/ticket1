@@ -395,10 +395,11 @@ iframe {
 /*////////////////////////////////////////////////////////////////////
 [Index] */
 .container {
-  margin: 50px;
+  margin: 25px;
   background-color: #fff;
   padding: 50px;
   border-radius: 10px;
+  box-shadow: 0 3px 20px 0px rgba(0, 0, 0, 0.5);
 }
 @media (max-width: 576px) {
   .container{
@@ -415,8 +416,13 @@ table {
 table th {
   padding: 5px;
   border: 1px solid #000;
-  /* text-align: center; */
+  text-align: center;
 }
+
+table td div input {
+  width: 100%;
+}
+
 
 table tr {
   border: 1px solid #000;
@@ -424,10 +430,17 @@ table tr {
 
 table td {
   border: 1px solid #000;
+  text-align: center;
 }
 
 h3 {
   margin: 10px;
+}
+
+.input-modal{
+  border:1px solid;
+  border-radius: 2px;
+  margin: 10px 0 10px 0;
 }
 
 select #meses{

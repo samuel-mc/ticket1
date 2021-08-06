@@ -27,6 +27,7 @@
 <!--===============================================================================================-->
 </head>
 <body>
+    <!-- Resumen financiero -->
     <div class="row-main container">
         <h3>Resumen Financiero</h3>
         <table>
@@ -37,21 +38,19 @@
 				<th>%</th>
 			</tr>
 			<tr>
-				<td id="ventas"><input type="text"></td>
+				<td id="ventas"></td>
 				<td id="costos">z</td>
 				<td id="margen">z</td>
 				<td id="porcentaje">z</td>
 			</tr>
 		</table>
     </div>
+
+    <!-- Flujo de efectivo -->
     <div class="row container" id="flujoEfectivoContainer">
         <h3>
             Flujo De Efectivo            
-            <button id="botonAgregar" class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                <!-- class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter" -->
-                Agregar
-            </button>
-
+            <button id="botonAgregar" class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"> Agregar </button>
             <button class="btn btn-danger" id="botonEliminar" type="button"> Eliminar</button>
 
             <!-- Modal Agregar -->
@@ -110,10 +109,6 @@
                 <td>Total</td>
             </tr>
 			<tr>
-				<th>Titulos</th>
-                <td></td>
-			</tr>
-			<tr>
 				<th>Ingresos</th>
                 <td></td>
 			</tr>
@@ -131,6 +126,223 @@
 			</tr>
 		</table>
     </div>
+
+    <!-- Estado de resultados -->
+    <div class="row container">
+        <h3>
+            Estado de Resultados            
+        </h3>
+        <table id="tableEdoResultados">
+            <tr>
+                <th></th>
+                <td>Total</td>
+            </tr>
+			<tr>
+				<th>Ventas</th>
+                <td></td>
+			</tr>
+			<tr>
+				<th>Costos</th>
+                <td></td>
+			</tr>
+			<tr>
+				<th>Margen</th>
+                <td></td>
+			</tr>
+			<tr>
+				<th>Saldo Final</th>
+                <td></td>
+			</tr>
+		</table>
+    </div>
+
+    <!-- Ingresos -->
+    <div class="row container">
+        <h3>
+            Ingresos
+            <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#conceptoModal"> Agregar </button>
+            <!-- <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#deleteConcepto"> Eliminar</button> -->
+        </h3>
+        <!-- Modal Agregar Concepto -->
+        <div class="modal fade" id="conceptoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <input type="text" placeholder="Ingresa aquí el concepto" id="concepto" autofocus>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button id="saveConcepto" type="button" class="btn btn-primary" data-bs-dismiss="modal">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Eliminar Concepto
+        <div class="modal fade" id="deleteConcepto" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">¿Estás seguro?</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button id="eliminarConcepto" type="button" class="btn btn-danger" data-bs-dismiss="modal">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <table id="ingresos">
+            <tr>
+                <th></th>
+                <td></td>
+                <td>Total</td>
+            </tr>
+			
+			<tr>
+                <td></td>
+				<th>Total</th>
+                <td></td>
+			</tr>
+		</table>
+    </div>
+
+    <!-- Costos Directos  -->
+    <div class="row container">
+        <h3>
+            Costos Directos
+            <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#costoDirectosModal"> Agregar </button>
+            <!-- <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#deleteConcepto"> Eliminar</button> -->
+        </h3>
+        <!-- Modal Costos Directos -->
+        <div class="modal fade" id="costoDirectosModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <form onsubmit="return costosDirectos(event)">
+                            <input type="text" name="concepto" placeholder="Ingresa el concepto" id="concepto" required> <br>
+                            <select id="tipo" name="tipo" >
+                                <option value="null" selected hidden>Seleccione uno</option> 
+                                <option value="campolibre">Campo libre</option> 
+                                <option value="sumatoria">Sumatoria De Otras Columnas</option> 
+                                <option value="porcentaje">Porcentaje De Otras Columnas</option> 
+                            </select> <br> <br>
+                            <button id="saveConcepto" type="submit" class="btn btn-primary" data-bs-dismiss="">Siguente</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal opciones costos directos -->
+        <div class="modal fade" id="costoDirectosModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <form onsubmit="return costosDirectos(event)">
+                            <input type="text" name="concepto" placeholder="Ingresa el concepto" id="concepto" required> <br>
+                            <select id="tipo" name="tipo" >
+                                <option value="null" selected hidden>Selecciona una tabla</option> 
+                                <option value="campolibre">Campo libre</option> 
+                                <option value="sumatoria">Sumatoria De Otras Columnas</option> 
+                                <option value="porcentaje">Porcentaje De Otras Columnas</option> 
+                            </select> <br> <br>
+                            <button id="saveConcepto" type="submit" class="btn btn-primary" data-bs-dismiss="">Siguente</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table id="">
+            <tr>
+                <th></th>
+                <td></td>
+                <td>Total</td>
+            </tr>
+			
+			<tr>
+                <td></td>
+				<th>Total</th>
+                <td></td>
+			</tr>
+		</table>
+    </div>
+
+    <!-- Recursos  -->
+    <div class="row container">
+        <h3>
+            Recursos
+            <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#recursosModal"> Agregar </button>
+        </h3>
+        <!-- Modal Costos Directos -->
+        <div class="modal fade" id="recursosModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <form onsubmit="return agregarFilaRecursos(event)">
+                            <input type="text" name="rol" placeholder="Ingresa un rol" id="rol" class="input-modal" required> <br>
+                            <button id="saveConcepto" type="submit" class="btn btn-primary" data-bs-dismiss="">Siguente</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table id="tableRecursos">
+            <tr>
+                <td></td>
+                <th>Recursos</th>
+                <td>Total</td>
+            </tr>
+			
+			<tr>
+                <td></td>
+				<th>Total</th>
+                <td></td>
+			</tr>
+		</table>
+    </div>
+
+    <!-- Costos  -->
+    <div class="row container">
+        <h3> Costos </h3>
+    
+        <table id="tableCostos">
+            <tr>
+                <th>Recursos</th>
+                <td>Total</td>
+            </tr>
+			
+			<tr>
+				<th>Total</th>
+                <td></td>
+			</tr>
+		</table>
+    </div>
+
+    <!-- Resumen Costos Recursos  -->
+    <div class="row container">
+        <h3> Resumen Costos Recursos </h3>
+    
+        <table id="tableCostosRecursos">
+            <tr>
+                <th>Recursos</th>
+                <td>Total</td>
+            </tr>
+			
+			<tr>
+				<th>Total</th>
+                <td></td>
+			</tr>
+		</table>
+    </div>  
+
     <!--===============================================================================================-->
 	<script src="./assets/vendor/jquery/jquery-3.2.1.min.js"></script>
     <!--===============================================================================================-->
