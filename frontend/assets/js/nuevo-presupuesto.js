@@ -1,27 +1,33 @@
 const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 let numColumnas = 0;
 let numFilas = 0;
+let filasRecursos = 0;
 let mesInicio;
 
 /* Funcon que agrega una celda a la table */
 function createCell(cell, text, tabla, tipo) {
     let div = document.createElement('div');
     let txt = document.createTextNode(text);
-    let input = document.createElement('input');
-    input.setAttribute('type', 'number');
+    
     
     switch (tipo) {
         case 'head':
-            div.appendChild(txt);                 
-            cell.appendChild(div); 
+            div.appendChild(txt);
+            txt.innerHTML = text;                 
+            cell.appendChild(txt); 
             break;
         case 'text':
             div.appendChild(txt);
-            cell.appendChild(div);
+            txt.innerHTML = text;
+            // div.setAttribute('id', `${tabla}${text}`)
+            cell.appendChild(txt);
             break;
         case 'input':
-            div.appendChild(input); 
-            cell.appendChild(div); 
+            let input = document.createElement('input');
+            // div.appendChild(input);
+            input.setAttribute('type', 'number');
+            input.setAttribute('id', `in${tabla}${filasRecursos}${text}`) 
+            cell.appendChild(input); 
             break;
         case 'delete':
             const fila = numFilas;
@@ -32,7 +38,11 @@ function createCell(cell, text, tabla, tipo) {
                 boton.setAttribute('class', 'borrar-recursos btn btn-danger')
             }
             div.appendChild(boton); 
-            cell.appendChild(div);  
+            cell.appendChild(div);
+        case 'total':
+            div.appendChild(txt);
+            div.setAttribute('id', `total${tabla}${text}`)
+            cell.appendChild(div);
         default:
           break;
     } 
@@ -45,8 +55,27 @@ function appendColumna(tabla, titulo) {
         if (i == 0) {
             createCell(tbl.rows[i].insertCell(tbl.rows[i].cells.length-1), titulo, tabla, 'head');
         } else {
-            if (i == 1 && tabla != 'ingresos' && tabla != 'tableRecursos' && tabla != 'tableCostos') {
+            if (i == 1 && tabla != 'ingresos' && tabla != 'tableCostos' && tabla != 'tableCostosRecursos') {
                 createCell(tbl.rows[i].insertCell(tbl.rows[i].cells.length-1), titulo, tabla, 'input');
+            } else {
+                if (i == tbl.rows.length - 1) {
+                    createCell(tbl.rows[i].insertCell(tbl.rows[i].cells.length-1), `${numColumnas}`, tabla,'total');
+                } else {
+                    createCell(tbl.rows[i].insertCell(tbl.rows[i].cells.length-1), `${numColumnas}-${i}`, tabla,'text');
+                }
+            }
+        }
+    }
+}
+
+function appendColumnaDelete(tabla, titulo) {
+    var tbl = document.getElementById(`${tabla}`); // table reference
+    for (let i = 0; i < tbl.rows.length; i++) {
+        if (i == 0) {
+            createCell(tbl.rows[i].insertCell(tbl.rows[i].cells.length-1), titulo, tabla, 'head');
+        } else {
+            if (i == tbl.rows.length-1) {
+                createCell(tbl.rows[i].insertCell(tbl.rows[i].cells.length-1), `${numColumnas}`, tabla,'total');
             } else {
                 createCell(tbl.rows[i].insertCell(tbl.rows[i].cells.length-1), `${numColumnas}-${i}`, tabla,'text');
             }
@@ -60,14 +89,14 @@ function appendFila(tabla, titulo) {
     let row = tbl.insertRow(tbl.rows.length-1);
     for (let i = 0; i < tbl.rows[0].cells.length; i++) {
         if (i == 0) {
-            createCell(row.insertCell(i), i, tabla, 'delete');
+            createCell(row.insertCell(i), '', tabla, 'delete');
         } else {
             if (i == 1) {
                 createCell(row.insertCell(i), titulo, tabla, 'head');
                 
             } else {
                 if (i == tbl.rows[0].cells.length - 1) {
-                    createCell(row.insertCell(i), i, tabla, 'text');
+                    createCell(row.insertCell(i), `${numColumnas}-${i}`, tabla, 'total');
                 } else {
                     createCell(row.insertCell(i), i, tabla, 'input');
                 } 
@@ -83,8 +112,9 @@ const agregarColumna = (mes) =>{
     appendColumna('tableFlujoEfectivo', mes);
     appendColumna('tableEdoResultados', mes);
     appendColumna('ingresos', mes);
-    appendColumna('tableRecursos', mes);
+    appendColumnaDelete('tableRecursos', mes);
     appendColumna('tableCostos', mes);
+    appendColumna('tableCostosRecursos', mes);
     numColumnas++;
     mesInicio++;
     if (mesInicio == 12) {
@@ -144,7 +174,7 @@ document.getElementById("deleteFlujoEfectivo").addEventListener("click", functio
 });
 
 
-/* Agrega una fila a la tabla concepto */
+/* Agrega una fila a la tabla ingresos */
 document.getElementById('saveConcepto').addEventListener('click', function() {
     const concepto = document.getElementById('concepto').value;
     appendFila('ingresos', concepto);
@@ -168,9 +198,29 @@ const agregarFilaRecursos = (event) => {
     event.preventDefault();
     $('#recursosModal').modal('hide');  
     const rol = document.getElementById('rol').value;
-    appendFila('tableRecursos', rol);
-    agregarSubRecursos('tableCostos', rol);
+    const costo = document.getElementById('costo').value;
+    let tbl = document.getElementById('tableRecursos');
+    let row = tbl.insertRow(tbl.rows.length-1);
+    for (let i = 0; i < tbl.rows[0].cells.length; i++) {
+        if (i == 0) {
+            createCell(row.insertCell(i), '', 'tableRecursos', 'delete');
+        } else {
+            if (i == 1) {
+                createCell(row.insertCell(i), rol, 'tableRecursos', 'head');
+                
+            } else {
+                if (i == tbl.rows[0].cells.length - 1) {
+                    createCell(row.insertCell(i), `${filasRecursos}${i}`, 'tableRecursos', 'total');
+                } else {
+                    createCell(row.insertCell(i), i, 'tableRecursos', 'input');
+                } 
+            }
+
+        }
+    }
+    llenarTablaCostos(rol, costo);
     agregarSubRecursos('tableCostosRecursos', rol);
+    filasRecursos ++;
 }
 
 const agregarSubRecursos = (tabla, titulo) => {
@@ -180,11 +230,86 @@ const agregarSubRecursos = (tabla, titulo) => {
         if (i == 0) {
             createCell(row.insertCell(i), titulo, tabla, 'head');
         } else {
-            createCell(row.insertCell(i), i, tabla, 'text');
+            createCell(row.insertCell(i), `${filasRecursos}-${i}`, tabla, 'text');
         }
     }
 }
 
+const llenarTablaCostos = (titulo, costo) => {
+    const tableCostos = document.getElementById('tableCostos');
+    let row = tableCostos.insertRow(tableCostos.rows.length-1);
+    for (let i = 0; i < tableCostos.rows[0].cells.length; i++) {
+        if (i == 0) {
+            createCell(row.insertCell(i), titulo, 'tableCostos', 'head');
+        } else {
+            if (i == tableCostos.rows[0].cells.length - 1) {
+                createCell(row.insertCell(i), costo*numColumnas, 'tableCostos', 'text');
+            } else {
+                createCell(row.insertCell(i), costo, 'tableCostos', 'text');
+            }
+        }
+    }
+    filaTotalCostos();
+    columnaTotalCostos('tableCostos');
+}
+
+const columnaTotalCostos = (tabla) => {
+    let tbl = document.getElementById(`${tabla}`);
+    let total = 0;
+    for (let i = 1; i < tbl.rows.length; i++) {
+        total = 0;
+        for (let j = 1; j < tbl.rows[0].cells.length - 1; j++) {
+            total += parseFloat(tbl.rows[i].cells[j].innerHTML);
+        }
+        tbl.rows[i].cells[tbl.rows[0].cells.length - 1].innerHTML = total;
+    }
+}
+
+const filaTotalCostos = () => {
+    let tbl = document.getElementById('tableCostos');
+    let total = 0;
+    for (let i = 1; i < tbl.rows[0].cells.length; i++) {
+        total = 0;
+        for (let j = 1; j < tbl.rows.length - 1; j++) {
+            total += parseFloat(tbl.rows[j].cells[i].innerHTML);
+        }
+        tbl.rows[tbl.rows.length-1].cells[i].innerHTML = total;
+    }
+}
+
+const actualizarCostsRecs = () => {
+    let tbl = document.getElementById('tableRecursos');
+    let tablaCostos = document.getElementById('tableCostos');
+    let tableCostosRecursos = document.getElementById('tableCostosRecursos');
+
+    let total = 0;
+    let totalPorcentaje = 0;
+
+    for (let i = 2; i < tbl.rows[0].cells.length-1; i++) {
+        total = 0;
+        totalPorcentaje = 0;
+        for (let j = 1; j < tbl.rows.length - 1; j++) {
+            const porcentaje = document.getElementById(`intableRecursos${j-1}${i}`).value
+            let cantidad = (porcentaje/100)*parseFloat(tablaCostos.rows[j].cells[i-1].innerHTML);
+            tableCostosRecursos.rows[j].cells[i-1].innerHTML = cantidad;
+            total += cantidad;
+            totalPorcentaje += parseFloat(porcentaje);
+        }
+        tableCostosRecursos.rows[tableCostosRecursos.rows.length - 1].cells[i-1].innerHTML = total;
+        tbl.rows[tbl.rows.length - 1].cells[i].innerHTML = totalPorcentaje/(tbl.rows.length - 2) + '%';
+    }
+
+    for (let i = 1; i < tbl.rows.length; i++) {
+        total = 0;
+        for (let j = 2; j < tbl.rows[0].cells.length - 1; j++) {
+            const porcentaje = document.getElementById(`intableRecursos${i-1}${j}`).value
+            total += parseFloat(porcentaje);
+        }
+        console.log(total);
+        tbl.rows[i].cells[tbl.rows[0].cells.length - 1].innerHTML = total/(tbl.rows[0].cells.length - 3) + '%';
+    }
+    columnaTotalCostos('tableCostosRecursos');
+}
 
 /* Elimina Una fila */
 $(function () {
@@ -198,6 +323,7 @@ $(function () {
     });
 });
 
+
 /* Elimina Una fila de recursos */
 $(function () {
     $(document).on('click', '.borrar-recursos', function (event) {
@@ -207,7 +333,8 @@ $(function () {
             var i = $(this).closest('tr').index();
             $(this).closest('tr').remove();
             document.getElementById('tableCostos').deleteRow(i);
-            document.getElementById('tableCostosRecursos').deleteRow(i);
+            // document.getElementById('tableCostosRecursos').deleteRow(i);
+            filaTotalCostos();
         }
     });
 });
