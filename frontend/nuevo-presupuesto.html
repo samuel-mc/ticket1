@@ -38,10 +38,10 @@
 				<th>%</th>
 			</tr>
 			<tr>
-				<td id="ventas"></td>
-				<td id="costos">z</td>
-				<td id="margen">z</td>
-				<td id="porcentaje">z</td>
+				<td id="ventas">0</td>
+				<td id="costosResFin">0</td>
+				<td id="margen">0</td>
+				<td id="porcentaje">0</td>
 			</tr>
 		</table>
     </div>
@@ -161,39 +161,23 @@
         <h3>
             Ingresos
             <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#conceptoModal"> Agregar </button>
-            <!-- <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#deleteConcepto"> Eliminar</button> -->
+            <button class="btn btn-primary float-right" type="button" onclick="actualizarIngresos()"> Actualizar </button>
         </h3>
         <!-- Modal Agregar Concepto -->
         <div class="modal fade" id="conceptoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <input type="text" placeholder="Ingresa aquí el concepto" id="concepto" autofocus>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button id="saveConcepto" type="button" class="btn btn-primary" data-bs-dismiss="modal">Guardar</button>
+                        <form onsubmit="return saveConcepto(event)">
+                            <input id="concepto" name="concepto" class="input-modal" placeholder="Ingresa aquí el concepto" type="text" required> <br>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Modal Eliminar Concepto
-        <div class="modal fade" id="deleteConcepto" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">¿Estás seguro?</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button id="eliminarConcepto" type="button" class="btn btn-danger" data-bs-dismiss="modal">Eliminar</button>
-                    </div>
-                </div>
-            </div>
-        </div> -->
         <table id="ingresos">
             <tr>
                 <th></th>
@@ -214,7 +198,7 @@
         <h3>
             Costos Directos
             <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#costoDirectosModal"> Agregar </button>
-            <!-- <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#deleteConcepto"> Eliminar</button> -->
+            <button class="btn btn-success" type="button" > update </button>
         </h3>
         <!-- Modal Costos Directos -->
         <div class="modal fade" id="costoDirectosModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -222,14 +206,14 @@
                 <div class="modal-content">
                     <div class="modal-body">
                         <form onsubmit="return costosDirectos(event)">
-                            <input type="text" name="concepto" placeholder="Ingresa el concepto" id="concepto" required> <br>
+                            <input type="text" name="concepto" placeholder="Ingresa el concepto" id="conceptoCostoDirecto" class="input-modal" required> <br>
                             <select id="tipo" name="tipo" >
                                 <option value="null" selected hidden>Seleccione uno</option> 
                                 <option value="campolibre">Campo libre</option> 
-                                <option value="sumatoria">Sumatoria De Otras Columnas</option> 
-                                <option value="porcentaje">Porcentaje De Otras Columnas</option> 
+                                <option value="sumatoria">Sumatoria</option> 
+                                <option value="porcentaje">Porcentaje</option> 
                             </select> <br> <br>
-                            <button id="saveConcepto" type="submit" class="btn btn-primary" data-bs-dismiss="">Siguente</button>
+                            <button id="saveConstoDirecto" type="submit" class="btn btn-primary" data-bs-dismiss="">Siguente</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                         </form>
                     </div>
@@ -237,20 +221,23 @@
             </div>
         </div>
 
-        <!-- Modal opciones costos directos -->
-        <div class="modal fade" id="costoDirectosModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <!-- Modal Sumatoria Costos Directos -->
+        <div class="modal fade" id="opcionesCDModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <form onsubmit="return costosDirectos(event)">
-                            <input type="text" name="concepto" placeholder="Ingresa el concepto" id="concepto" required> <br>
-                            <select id="tipo" name="tipo" >
-                                <option value="null" selected hidden>Selecciona una tabla</option> 
-                                <option value="campolibre">Campo libre</option> 
-                                <option value="sumatoria">Sumatoria De Otras Columnas</option> 
-                                <option value="porcentaje">Porcentaje De Otras Columnas</option> 
-                            </select> <br> <br>
-                            <button id="saveConcepto" type="submit" class="btn btn-primary" data-bs-dismiss="">Siguente</button>
+                        <form onsubmit="return opcionesCDModal(event)">
+                            <h4>Seleccione al menos una tabla.</h4>
+                            <label for="ingresosCD">
+                                <input type="checkbox" id="ingresosCD" name="ingresosCD"> Ingresos
+                            </label> <br>
+                            <label>
+                                <input type="checkbox" id="costosCD" name="costosCD" value="costosCD"> Costos
+                            </label><br>
+                            <label>
+                                <input type="checkbox" id="recostosCD" name="recostosCD" value="recostosCD"> Recursos Costos
+                            </label><br>
+                            <button id="saveOpcionesCDModal" type="submit" class="btn btn-primary" data-bs-dismiss="">Siguente</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                         </form>
                     </div>
@@ -258,7 +245,126 @@
             </div>
         </div>
 
-        <table id="">
+        <!-- Modal Porcentajes Costos Directos -->
+        <div class="modal fade" id="porcentajesCDModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <form onsubmit="return porcentajesCDModal(event)">
+                            <h4>Seleccione al menos una tabla.</h4>
+                            <input id="porcentajeCD" type="number" class="input-modal" placeholder="Ingresa el porcentaje (0 - 100)" max="100" min="0" required> <br>
+
+                            <label for="ingresosCD">
+                                <input type="checkbox" id="ingresosPCD" name="ingresosPCD"> Ingresos
+                            </label> <br>
+                            <label>
+                                <input type="checkbox" id="costosPCD" name="costosPCD" value="costosPCD"> Costos
+                            </label><br>
+                            <label>
+                                <input type="checkbox" id="recostosPCD" name="recostosPCD" value="recostosPCD"> Recursos Costos
+                            </label><br>
+                            <button id="saveOpcionesPCDModal" type="submit" class="btn btn-primary" data-bs-dismiss="">Siguente</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <table id="tableCostosDirectos">
+            <tr>
+                <th></th>
+                <td></td>
+                <td>Total</td>
+            </tr>
+			
+			<tr>
+                <td></td>
+				<th>Total</th>
+                <td></td>
+			</tr>
+		</table>
+    </div>
+
+    <!-- Gastos Administrativos  -->
+    <div class="row container">
+        <h3>
+            Gastos Administrativos
+            <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#gastosAdmModal"> Agregar </button>
+        </h3>
+        <!-- Modal Gastos Administrativos  -->
+        <div class="modal fade" id="gastosAdmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <form onsubmit="return gastosAdm(event)">
+                            <input type="text" name="concepto" placeholder="Ingresa el concepto" id="conceptoGastosAdm" class="input-modal" required> <br>
+                            <select id="tipoGastoAdm" name="tipo" >
+                                <option value="null" selected hidden>Seleccione uno </option> 
+                                <option value="campolibre">Campo libre</option> 
+                                <option value="sumatoria">Sumatoria</option> 
+                                <option value="porcentaje">Porcentaje</option> 
+                            </select> <br> <br>
+                            <button type="submit" class="btn btn-primary" data-bs-dismiss="">Siguente</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Sumatoria Gastos Administrativos -->
+        <div class="modal fade" id="sumatGAModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <form onsubmit="return opcionesGAModal(event)">
+                            <h4>Seleccione al menos una tabla.</h4>
+                            <label for="ingresosCD">
+                                <input type="checkbox" id="ingresosGA" name="ingresosGA"> Ingresos
+                            </label> <br>
+                            <label>
+                                <input type="checkbox" id="costosGA" name="costosGA" value="costosGA"> Costos
+                            </label><br>
+                            <label>
+                                <input type="checkbox" id="recostosGA" name="recostosGA" value="recostosGA"> Recursos Costos
+                            </label><br>
+                            <button id="saveOpcionesGAModal" type="submit" class="btn btn-primary" data-bs-dismiss="">Siguente</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Porcentajes Costos Directos -->
+        <div class="modal fade" id="porcentajesGAModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <form onsubmit="return porcentajesGAModal(event)">
+                            <h4>Seleccione al menos una tabla.</h4>
+                            <input id="porcentajeGA" type="number" class="input-modal" placeholder="Ingresa el porcentaje (0 - 100)" max="100" min="0" required> <br>
+
+                            <label for="ingresosGA">
+                                <input type="checkbox" id="ingresosPGA" name="ingresosPGA"> Ingresos
+                            </label> <br>
+                            <label>
+                                <input type="checkbox" id="costosPGA" name="costosPGA" value="costosPGA"> Costos
+                            </label><br>
+                            <label>
+                                <input type="checkbox" id="recostosPGA" name="recostosPGA" value="recostosPGA"> Recursos Costos
+                            </label><br>
+                            <button id="saveOpcionesPGAModal" type="submit" class="btn btn-primary" data-bs-dismiss="">Siguente</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table id="tableGastosAdm">
             <tr>
                 <th></th>
                 <td></td>
@@ -345,7 +451,13 @@
                 <td></td>
 			</tr>
 		</table>
-    </div>  
+    </div> 
+
+    <!-- Boton guardar  -->
+    <div class="row container">
+        <button type="button" id="botonGuardar" class="btn btn-primary btn-lg">Guardar</button>
+    </div>
+    
 
     <!--===============================================================================================-->
 	<script src="./assets/vendor/jquery/jquery-3.2.1.min.js"></script>
@@ -366,6 +478,9 @@
         <script src="./assets/js/index.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
         <script src="./assets/js/nuevo-presupuesto.js"></script>
+        <script src="./assets/js/add-filas.js"></script>
+        <script src="./assets/js/add-columna.js"></script>
+        <script src="./assets/js/get-total.js"></script>
 
 </body>
 </html>

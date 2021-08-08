@@ -438,11 +438,25 @@ h3 {
 }
 
 .input-modal{
-  border:1px solid;
-  border-radius: 2px;
+  border:1px solid rgb(156, 156, 156);
+  padding: 10px;
+  border-radius: 4px;
+  width: 100%;
   margin: 10px 0 10px 0;
 }
 
-select #meses{
+select {
+  border:1px solid rgb(156, 156, 156);
+  padding: 10px;
+  border-radius: 4px;
+  width: 100%;
+  size: 12px;
+}
+
+select option{
   size: 10px;
+}
+
+#botonGuardar {
+  box-shadow: 0 3px 20px 0px rgba(0, 0, 0, 0)
 }
