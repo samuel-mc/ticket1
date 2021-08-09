@@ -17,6 +17,8 @@ document.getElementById("deleteFlujoEfectivo").addEventListener("click", functio
         eliminarColumna('tableFlujoEfectivo');
         eliminarColumna('tableEdoResultados');
         eliminarColumna('ingresos');
+        eliminarColumna('tableCostosDirectos');
+        eliminarColumna('tableGastosAdm');
         eliminarColumna('tableRecursos');
         eliminarColumna('tableCostos');
         eliminarColumna('tableCostosRecursos');
@@ -47,7 +49,7 @@ $(function () {
 });
 
 
-/* Elimina Una fila de recursos */
+/* Elimina Una fila de recursos y las que están relacionadas. */
 $(function () {
     $(document).on('click', '.borrar-recursos', function (event) {
         event.preventDefault();
@@ -56,7 +58,6 @@ $(function () {
             var i = $(this).closest('tr').index();
             $(this).closest('tr').remove();
             document.getElementById('tableCostos').deleteRow(i);
-            // document.getElementById('tableCostosRecursos').deleteRow(i);
             totalFilaPorcentajes('tableRecursos');
             totalColumnaPorcentajes('tableRecursos');
             actualizarCostsRecs();

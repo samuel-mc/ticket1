@@ -6,7 +6,8 @@ const cookieParser = require('cookie-parser')
 require('dotenv').config()
 
 /* Rutas utilizadas */
-const usuariosRoutes = require('./routes/users.routes')
+const usuariosRoutes = require('./routes/users.routes');
+const presupuestosRoutes = require('./routes/presupuestos.routes');
 
 /* Middlewares Globales */
 app.use(express.json())
@@ -28,7 +29,4 @@ app.listen(3030, async () => {
 //Rutas
 // app.use(require('./routes/index'))
 usuariosRoutes(app);
-
-app.get('/', (req, res) => {
-    res.send('Fine');
-})
+presupuestosRoutes(app);

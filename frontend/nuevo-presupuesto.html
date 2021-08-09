@@ -30,7 +30,7 @@
     <!-- Resumen financiero -->
     <div class="row-main container">
         <h3>Resumen Financiero</h3>
-        <table>
+        <table id="tableResFinan">
 			<tr>
 				<th>Ventas</th>
 				<th>Costos</th>
@@ -110,19 +110,19 @@
             </tr>
 			<tr>
 				<th>Ingresos</th>
-                <td></td>
+                <td>0</td>
 			</tr>
 			<tr>
 				<th>Egresos</th>
-                <td></td>
+                <td>0</td>
 			</tr>
 			<tr>
 				<th>Total</th>
-                <td></td>
+                <td>0</td>
 			</tr>
 			<tr>
 				<th>Acumulado</th>
-                <td></td>
+                <td>0</td>
 			</tr>
 		</table>
     </div>
@@ -139,19 +139,19 @@
             </tr>
 			<tr>
 				<th>Ventas</th>
-                <td></td>
+                <td>0</td>
 			</tr>
 			<tr>
 				<th>Costos</th>
-                <td></td>
+                <td>0</td>
 			</tr>
 			<tr>
 				<th>Margen</th>
-                <td></td>
+                <td>0</td>
 			</tr>
 			<tr>
 				<th>Saldo Final</th>
-                <td></td>
+                <td>0</td>
 			</tr>
 		</table>
     </div>
@@ -188,7 +188,7 @@
 			<tr>
                 <td></td>
 				<th>Total</th>
-                <td></td>
+                <td>0</td>
 			</tr>
 		</table>
     </div>
@@ -198,7 +198,7 @@
         <h3>
             Costos Directos
             <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#costoDirectosModal"> Agregar </button>
-            <button class="btn btn-success" type="button" > update </button>
+            <button class="btn btn-primary float-right" type="button" onclick="totalCostosDA('tableCostosDirectos')" > Actualizar </button>
         </h3>
         <!-- Modal Costos Directos -->
         <div class="modal fade" id="costoDirectosModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -282,7 +282,7 @@
 			<tr>
                 <td></td>
 				<th>Total</th>
-                <td></td>
+                <td>0</td>
 			</tr>
 		</table>
     </div>
@@ -292,6 +292,7 @@
         <h3>
             Gastos Administrativos
             <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#gastosAdmModal"> Agregar </button>
+            <button class="btn btn-primary float-right" type="button" onclick="totalCostosDA('tableGastosAdm')" > Actualizar </button>
         </h3>
         <!-- Modal Gastos Administrativos  -->
         <div class="modal fade" id="gastosAdmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -374,7 +375,7 @@
 			<tr>
                 <td></td>
 				<th>Total</th>
-                <td></td>
+                <td>0</td>
 			</tr>
 		</table>
     </div>
@@ -386,7 +387,7 @@
             <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#recursosModal"> Agregar </button>
             <button class="btn btn-primary float-right" type="button" onclick="actualizarCostsRecs()"> Actualizar </button>
         </h3>
-        <!-- Modal Costos Directos -->
+        <!-- Modal Recursos -->
         <div class="modal fade" id="recursosModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -414,7 +415,7 @@
 			<tr>
                 <td></td>
 				<th>Total</th>
-                <td></td>
+                <td>0</td>
 			</tr>
 		</table>
     </div>
@@ -431,7 +432,7 @@
 			
 			<tr>
 				<th>Total</th>
-                <td></td>
+                <td>0</td>
 			</tr>
 		</table>
     </div>
@@ -448,16 +449,32 @@
 			
 			<tr>
 				<th>Total</th>
-                <td></td>
+                <td>0</td>
 			</tr>
 		</table>
     </div> 
 
-    <!-- Boton guardar  -->
-    <div class="row container">
-        <button type="button" id="botonGuardar" class="btn btn-primary btn-lg">Guardar</button>
+    <!-- Modal Guardad todo -->
+    <div class="modal fade" id="saveAll" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form onsubmit="return guardarTodo(event)">
+                        <label for="rol">Proyecto</label>
+                        <input type="text" name="proyecto" placeholder="Ingresa el nombre del proyecto" id="proyecto" class="input-modal" required> <br>
+                        <button onclick="saveAll(event)" type="submit" class="btn btn-primary" data-bs-dismiss="">Siguente</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-    
+    <!-- Boton guardar  -->
+    <div class=" container d-flex justify-content-center">
+        <button type="button" class="mainButton col-md-5 btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#saveAll">Guardar</button> <br>
+        <button type="button" onclick="cancelar()" class="mainButton col-md-3 btn btn-danger btn-lg">Cancelar</button>
+    </div>
+         
 
     <!--===============================================================================================-->
 	<script src="./assets/vendor/jquery/jquery-3.2.1.min.js"></script>
@@ -480,7 +497,9 @@
         <script src="./assets/js/nuevo-presupuesto.js"></script>
         <script src="./assets/js/add-filas.js"></script>
         <script src="./assets/js/add-columna.js"></script>
+        <script src="./assets/js/eliminar.js"></script>
         <script src="./assets/js/get-total.js"></script>
+        <script src="./assets/js/save-presupuesto.js"></script>
 
 </body>
 </html>

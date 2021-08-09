@@ -53,12 +53,13 @@ const totalColumnaPorcentajes = (tabla) => {
     }
 }
 
-const actualizarIngresos = () => { //aqui
+/* Actualiza los campos en la tabla ingresos. */
+const actualizarIngresos = () => {
     let tablaIngresos = document.getElementById('ingresos');
     let tableFlujoEfectivo = document.getElementById('tableFlujoEfectivo');
-    let tableEdoResultados = document.getElementById('tableEdoResultados');
     let ingreso;
     let totalIngresos = 0;
+    /* Obtener el total por columna */
     for (let i = 2; i < tablaIngresos.rows[0].cells.length-1; i++) {
         totalIngresos = 0;
         for (let j = 1; j < tablaIngresos.rows.length - 1; j++) {
@@ -67,6 +68,18 @@ const actualizarIngresos = () => { //aqui
         }
         tablaIngresos.rows[tablaIngresos.rows.length - 1].cells[i].innerHTML = totalIngresos;
         tableFlujoEfectivo.rows[1].cells[i-1].innerHTML = totalIngresos;
-        tableEdoResultados.rows[1].cells[i-1].innerHTML = totalIngresos;
     }
+    /* Obtener el total por fila, actualiza el valor  */
+    for (let j = 1; j < tablaIngresos.rows.length - 1; j++) {
+        totalIngresos = 0;
+        for (let i = 2; i < tablaIngresos.rows[0].cells.length-1; i++) {
+            ingreso = tablaIngresos.rows[j].cells[i].children[0].value
+            totalIngresos += parseFloat(ingreso);
+        }
+        tablaIngresos.rows[j].cells[tablaIngresos.rows[0].cells.length-1].innerHTML = totalIngresos;
+    }
+    totalColumna('tableEdoResultados');
+    fillResFinan();
+    fillFlujoEfectivo();
+    fillEdoResultados();
 }

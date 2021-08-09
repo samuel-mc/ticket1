@@ -9,7 +9,7 @@ function appendColumna(tabla, titulo) {
                 createCell(tbl.rows[i].insertCell(tbl.rows[i].cells.length-1), titulo, tabla, 'input');
             } else {
                 if (i == tbl.rows.length - 1) {
-                    createCell(tbl.rows[i].insertCell(tbl.rows[i].cells.length-1), `${numColumnas}`, tabla,'total');
+                    createCell(tbl.rows[i].insertCell(tbl.rows[i].cells.length-1), 0, tabla,'total');
                 } else {
                     createCell(tbl.rows[i].insertCell(tbl.rows[i].cells.length-1), 0, tabla,'text');
                 }
@@ -26,7 +26,7 @@ const addColTexto = (tabla, titulo) => {
             createCell(tbl.rows[i].insertCell(tbl.rows[i].cells.length-1), titulo, tabla, 'head');
         } else {
             if (i == tbl.rows.length - 1) {
-                createCell(tbl.rows[i].insertCell(tbl.rows[i].cells.length-1), `${numColumnas}`, tabla,'total');
+                createCell(tbl.rows[i].insertCell(tbl.rows[i].cells.length-1), 0, tabla,'total');
             } else {
                 createCell(tbl.rows[i].insertCell(tbl.rows[i].cells.length-1), 0, tabla,'text');
             }
@@ -42,9 +42,9 @@ function addColInput(tabla, titulo) {
             createCell(tbl.rows[i].insertCell(tbl.rows[i].cells.length-1), titulo, tabla, 'head');
         } else {
             if (i == tbl.rows.length-1) {
-                createCell(tbl.rows[i].insertCell(tbl.rows[i].cells.length-1), `${numColumnas}`, tabla,'total');
+                createCell(tbl.rows[i].insertCell(tbl.rows[i].cells.length-1), 0, tabla,'total');
             } else {
-                createCell(tbl.rows[i].insertCell(tbl.rows[i].cells.length-1), `${numColumnas}`, tabla,'input');
+                createCell(tbl.rows[i].insertCell(tbl.rows[i].cells.length-1), 0, tabla,'input');
             }
             
         }
