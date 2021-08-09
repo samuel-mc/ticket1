@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Editar Presupuesto</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="./assets/images/icons/favicon.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="./assets/vendor/bootstrap/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="./assets/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="./assets/vendor/animate/animate.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="./assets/vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="./assets/vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="./assets/vendor/select2/select2.min.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="./assets/vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="./assets/css/util.css">
+	<link rel="stylesheet" type="text/css" href="./assets/css/main.css">
+<!--===============================================================================================-->
+</head>
+<body>
+    <!-- Resumen financiero -->
+    <div class="row-main container">
+        <h3>Resumen Financiero</h3>
+        <table id="tableResFinan">
+			<tr>
+				<th>Ventas</th>
+				<th>Costos</th>
+				<th>Margen</th>
+				<th>%</th>
+			</tr>
+			<tr>
+				<td id="ventas">0</td>
+				<td id="costosResFin">0</td>
+				<td id="margen">0</td>
+				<td id="porcentaje">0</td>
+			</tr>
+		</table>
+    </div>
+
+    <!-- Flujo de efectivo -->
+    <div class="row container" id="flujoEfectivoContainer">
+        <h3>
+            Flujo De Efectivo            
+            <button id="botonAgregar" class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"> Agregar </button>
+            <button class="btn btn-danger" id="botonEliminar" type="button"> Eliminar</button>
+
+            <!-- Modal Agregar -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Mes de inicio</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <select id="meses" name="meses" >
+                                <option selected hidden>Mes</option> 
+                                <option value="Enero">Enero</option> 
+                                <option value="Febrero">Febrero</option> 
+                                <option value="Marzo">Marzo</option> 
+                                <option value="Abril">Abril</option> 
+                                <option value="Mayo">Mayo</option> 
+                                <option value="Junio">Junio</option> 
+                                <option value="Julio">Julio</option> 
+                                <option value="Agosto">Agosto</option> 
+                                <option value="Septiembre">Septiembre</option> 
+                                <option value="Octubre">Octubre</option> 
+                                <option value="Noviembre">Noviembre</option> 
+                                <option value="Diciembre">Diciembre</option> 
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button id="saveFlujoEfectivo" type="button" class="btn btn-primary" data-bs-dismiss="modal">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Eliminar -->
+            <div class="modal fade" id="modalEliminar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">¿Estás seguro?</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button id="deleteFlujoEfectivo" type="button" class="btn btn-danger" data-bs-dismiss="modal">Eliminar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h3>
+        <table id="tableFlujoEfectivo">
+            <tr>
+                <th></th>
+                <td>Total</td>
+            </tr>
+			<tr>
+				<th>Ingresos</th>
+                <td>0</td>
+			</tr>
+			<tr>
+				<th>Egresos</th>
+                <td>0</td>
+			</tr>
+			<tr>
+				<th>Total</th>
+                <td>0</td>
+			</tr>
+			<tr>
+				<th>Acumulado</th>
+                <td>0</td>
+			</tr>
+		</table>
+    </div>
+
+    <!-- Estado de resultados -->
+    <div class="row container">
+        <h3>
+            Estado de Resultados            
+        </h3>
+        <table id="tableEdoResultados">
+            <tr>
+                <th></th>
+                <td>Total</td>
+            </tr>
+			<tr>
+				<th>Ventas</th>
+                <td>0</td>
+			</tr>
+			<tr>
+				<th>Costos</th>
+                <td>0</td>
+			</tr>
+			<tr>
+				<th>Margen</th>
+                <td>0</td>
+			</tr>
+			<tr>
+				<th>Saldo Final</th>
+                <td>0</td>
+			</tr>
+		</table>
+    </div>
+
+    <!-- Ingresos -->
+    <div class="row container" id="contenedorIngresos">
+        <h3>
+            Ingresos
+            <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#conceptoModal"> Agregar </button>
+            <button class="btn btn-primary float-right" type="button" onclick="actualizarIngresos()"> Actualizar </button>
+        </h3>
+        <!-- Modal Agregar Concepto -->
+        <div class="modal fade" id="conceptoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <form onsubmit="return saveConcepto(event)">
+                            <input id="concepto" name="concepto" class="input-modal" placeholder="Ingresa aquí el concepto" type="text" required> <br>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table id="ingresos">
+            <tr>
+                <th></th>
+                <td></td>
+                <td>Total</td>
+            </tr>
+			
+			<tr>
+                <td></td>
+				<th>Total</th>
+                <td>0</td>
+			</tr>
+		</table>
+    </div>
+
+    <!-- Modal Guardad todo -->
+    <div class="modal fade" id="saveAll" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form onsubmit="return guardarTodo(event)">
+                        <label for="rol">Proyecto</label>
+                        <input type="text" name="proyecto" placeholder="Ingresa el nombre del proyecto" id="proyecto" class="input-modal" required> <br>
+                        <button  type="submit" class="btn btn-primary" data-bs-dismiss="">Siguente</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Boton guardar  -->
+    <div class=" container d-flex justify-content-center">
+        <button type="button" class="mainButton col-md-5 btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#saveAll">Guardar</button> <br>
+        <button type="button" onclick="cancelar()" class="mainButton col-md-3 btn btn-danger btn-lg">Cancelar</button>
+    </div>
+         
+
+    <!--===============================================================================================-->
+	<script src="./assets/vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+        <script src="./assets/vendor/animsition/js/animsition.min.js"></script>
+    <!--===============================================================================================-->
+        <script src="./assets/vendor/bootstrap/js/popper.js"></script>
+        <script src="./assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!--===============================================================================================-->
+        <script src="./assets/vendor/select2/select2.min.js"></script>
+    <!--===============================================================================================-->
+        <script src="./assets/vendor/daterangepicker/moment.min.js"></script>
+        <script src="./assets/vendor/daterangepicker/daterangepicker.js"></script>
+    <!--===============================================================================================-->
+        <script src="./assets/vendor/countdowntime/countdowntime.js"></script>
+    <!--===============================================================================================-->
+        <script src="./assets/js/style.js"></script>
+        <script src="./assets/js/edit-presupuesto.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+</body>
+</html>

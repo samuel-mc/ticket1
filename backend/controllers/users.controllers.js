@@ -94,6 +94,17 @@ const loginUsuario = async (req, res) => {
     }
 }
 
+const cambiarContraseña = async (req, res) => {
+    const { email, password } = req.body
+    const passHas = await bcrypt.hash(password, 10);
+      try {
+            await usuarioModel().update({ password: passHas },{ where: { email } });
+            res.status(200).json('Contraseña modificada con exito')
+      } catch (err) {
+          res.status(400).json('Contraseña no modificada')
+      }
+}
+
 module.exports = { 
     crearUsuario,
     obtenerUsuarios,
@@ -101,5 +112,6 @@ module.exports = {
     actualizarUsuario,
     eliminarUsuario,
 
-    loginUsuario
+    loginUsuario,
+    cambiarContraseña
 }

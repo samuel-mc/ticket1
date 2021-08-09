@@ -1,23 +1,32 @@
 const { Ingreso } = require('../models/ingreso.models');
+const { MesIgreso } = require('../models/mes-ingreso.models');
 const { CostoDirecto } = require('../models/costodir.models');
 const { CostoAdm } = require('../models/costoadm.models');
 const { Recurso } = require('../models/recurso.models');
-const { Presupuesto } = require('../models/presupuesto.models');
+const { Presupuesto, getPresupuestos } = require('../models/presupuesto.models');
 
 const { v4: uuidv4 } = require('uuid');
 const jwt = require('jsonwebtoken')
 
 const crearIngreso = async (req, res) => {
-    const { concepto, mes, cantidad, id_presupuesto } = req.body;
-    console.log(concepto, mes, cantidad, id_presupuesto);
-
+    const { concepto, ingresoPorMes, id_presupuesto } = req.body;
+    const id_ingreso = uuidv4();
+    const backid = id_presupuesto
+    console.log(concepto, ingresoPorMes, id_presupuesto);
     try {
         await Ingreso.create({
+            id_ingreso,
             concepto,
-            mes,
-            cantidad,
-            id_presupuesto
+            id_presupuesto: backid
         });
+        ingresoPorMes.map(async function(ingresoPorMes) {
+            await MesIgreso.create({
+                id_ingreso,
+                mes: ingresoPorMes.mes,
+                cantidad: ingresoPorMes.cantidad
+            });  
+        });
+
         res.status(201).json('Ingreso agregado con éxito.');
     } catch (err) {
         res.status(400).json('Problema al crear el ingreso: ' + err.message);
@@ -27,7 +36,6 @@ const crearIngreso = async (req, res) => {
 const crearCostoDirecto = async (req, res) => {
     const { concepto, mes, cantidad, id_presupuesto } = req.body;
     console.log(concepto, mes, cantidad, id_presupuesto);
-
     try {
         await CostoDirecto.create({
             concepto,
@@ -85,6 +93,7 @@ const crearPresupuesto = async (req, res) => {
             id_presupuesto: id_unico,
             id_presupuestoBis: id_presupuesto,
             id_usuario: 'e16a30c8-0998-450f-a7db-3cfb4d4e3311',
+            eliminado: 0,
             proyecto,
         });
         res.status(201).json('Presupuesto agregado con exito.');
@@ -95,14 +104,34 @@ const crearPresupuesto = async (req, res) => {
 
 const obtenerPresupuestos = async (req, res) => {
     try {
-        presupuestos = await Presupuesto.findAll({ });
-        res.status(200).json(presupuestos);
+        presupuestos = await getPresupuestos();
+        res.status(200).json(presupuestos[0]);
     } catch (err) {
         res.status(400).json('Problema al leer los presupuestos: ' + err.message);
     }
 }
 
-obtenerPresupuestos
+const eliminarPresupuestos = async (req,res) => {
+    try {
+        const { id } = req.params;
+        await Presupuesto.update({ eliminado: 0}, { where: { id_presupuestoBis: id } })
+        res.status(200).json('Presupuesto eliminado con exito.');
+    } catch (err) {
+        res.status(400).json('Problema al eliminar el presupuestos: ' + err.message);
+    }
+}
+
+const obtenerIngresos = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const ingresos = await Ingreso.findAll({ where: { id_presupuesto: id } })
+        console.log(ingresos);
+        res.status(200).json(ingresos);
+    } catch (err) {
+        res.status(400).json('Problema al leer los costos: ' + err.message);
+    }   
+      
+}
 
 
 
@@ -112,5 +141,8 @@ module.exports = {
     crearCostoAdm,
     crearRecurso,
     crearPresupuesto,
-    obtenerPresupuestos
+    obtenerPresupuestos,
+    eliminarPresupuestos,
+    obtenerIngresos
+
 }

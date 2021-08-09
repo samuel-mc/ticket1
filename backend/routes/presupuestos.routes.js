@@ -4,7 +4,9 @@ const {
     crearCostoAdm,
     crearRecurso,
     crearPresupuesto,
-    obtenerPresupuestos
+    obtenerPresupuestos,
+    eliminarPresupuestos,
+    obtenerIngresos
 } = require('../controllers/presupuestos.controllers')
 
 module.exports = (app) => {
@@ -15,7 +17,8 @@ module.exports = (app) => {
     app.post('/recursos', crearRecurso);
     app.post('/presupuesto', crearPresupuesto);
     app.get('/presupuesto', obtenerPresupuestos);
-  //  app.get('/usuarios', obtenerUsuarios);
+    app.delete('/presupuesto/:id', eliminarPresupuestos);
+    app.get('/ingresos/:id', obtenerIngresos);
   //  app.get('/usuarios/:id', checkUsuarioExistente, obtenerUnUsuarios);
   //  app.put('/usuarios/:id', checkUsuarioExistente, checkEmailExistente, checkDatosAlta, checkUsernameExistente, actualizarUsuario);
   //  app.delete('/usuarios/:id', checkUsuarioExistente, eliminarUsuario);

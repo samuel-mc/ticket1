@@ -1,24 +1,29 @@
-const localhost = 'http://localhost:3030/'
+const localhost = 'http://localhost:3030'
 
 const guardarTodo = async (event) => {
     event.preventDefault();
     let id_presupuesto = 'PR' + Date.now();
-    let concepto, mes, cantidad;
+    let concepto, cantidad;
     /* POST ingresos */
     const tableIngresos = document.getElementById('ingresos');
     for (let i = 1; i < tableIngresos.rows.length - 1; i++) {
+        let ingresoPorMes = [];
+        concepto = tableIngresos.rows[i].cells[1].innerHTML;
         for (let j = 2; j < tableIngresos.rows[0].cells.length - 1; j++) {
-            concepto = tableIngresos.rows[i].cells[1].innerHTML;
             mes = tableIngresos.rows[0].cells[j].innerHTML;
             cantidad = parseFloat(tableIngresos.rows[i].cells[j].children[0].value);
-            let data = {
-                concepto,
-                mes,
-                cantidad,
-                id_presupuesto
+            let meses = {
+                'mes': mes,
+                'cantidad': cantidad
             }
-            await post(`${localhost}ingresos`,data);
+            ingresoPorMes.push(meses)
         }        
+        let data = {
+            concepto,
+            ingresoPorMes,
+            id_presupuesto
+        }
+        await post(`${localhost}/ingresos`,data);
     }
     /* POST constos directos*/
     const tableCostosDirectos = document.getElementById('tableCostosDirectos');
@@ -82,7 +87,6 @@ const guardarTodo = async (event) => {
     }
 
     const proyecto = document.getElementById('proyecto').value
-    console.log(proyecto);
     let data = {
         id_presupuesto,
         proyecto

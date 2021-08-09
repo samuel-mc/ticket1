@@ -12,7 +12,8 @@ const {
     actualizarUsuario,
     eliminarUsuario,
 
-    loginUsuario
+    loginUsuario,
+    cambiarContraseña
 } = require('../controllers/users.controllers')
 
 module.exports = (app) => { //Usando como referencia la clase 20
@@ -22,7 +23,8 @@ module.exports = (app) => { //Usando como referencia la clase 20
     app.get('/usuarios/:id', checkUsuarioExistente, obtenerUnUsuarios);
     app.put('/usuarios/:id', checkUsuarioExistente, checkEmailExistente, checkDatosAlta, checkUsernameExistente, actualizarUsuario);
     app.delete('/usuarios/:id', checkUsuarioExistente, eliminarUsuario);
-
+    
     /* Rutas login */
     app.post('/login', loginUsuario)
+    app.put('/password', cambiarContraseña)
 }

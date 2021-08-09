@@ -24,7 +24,10 @@ const Presupuesto = db.define('presupuesto', {
         autoIncrement: true,
         allowNull: false
     },
-    
+    eliminado: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+    },
     createdAt: Sequelize.DATE,
     updatedAt: Sequelize.DATE
 }) ;
@@ -34,4 +37,9 @@ const Presupuesto = db.define('presupuesto', {
 //     console.log('Presupuesto Creada');
 // })
 
-module.exports = { Presupuesto };
+const getPresupuestos = () => {
+    const presupuesto = db.query('SELECT * FROM presupuestos WHERE eliminado <> 1');
+    return presupuesto;
+}
+
+module.exports = { Presupuesto, getPresupuestos };
