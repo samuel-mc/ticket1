@@ -19,8 +19,4 @@ module.exports = (app) => {
     app.get('/presupuesto', obtenerPresupuestos);
     app.delete('/presupuesto/:id', eliminarPresupuestos);
     app.get('/ingresos/:id', obtenerIngresos);
-  //  app.get('/usuarios/:id', checkUsuarioExistente, obtenerUnUsuarios);
-  //  app.put('/usuarios/:id', checkUsuarioExistente, checkEmailExistente, checkDatosAlta, checkUsernameExistente, actualizarUsuario);
-  //  app.delete('/usuarios/:id', checkUsuarioExistente, eliminarUsuario);
-
 }

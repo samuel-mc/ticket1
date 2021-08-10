@@ -42,7 +42,7 @@ const guardarTodo = async (event) => {
                 cantidad,
                 id_presupuesto
             }
-            await post(`${localhost}costos-directos`,data);
+            await post(`${localhost}/costos-directos`,data);
         }        
     }
     /* POST GASTOS ADM*/
@@ -62,7 +62,7 @@ const guardarTodo = async (event) => {
                 cantidad,
                 id_presupuesto
             }
-            await post(`${localhost}costos-adm`,data);
+            await post(`${localhost}/costos-adm`,data);
         }        
     }
     /* POST RECURSOS */
@@ -82,7 +82,7 @@ const guardarTodo = async (event) => {
                 porcentaje,
                 id_presupuesto
             }
-            await post(`${localhost}recursos`,data);
+            await post(`${localhost}/recursos`,data);
         }        
     }
 
@@ -91,7 +91,7 @@ const guardarTodo = async (event) => {
         id_presupuesto,
         proyecto
     }
-    await post(`${localhost}presupuesto`,data);
+    await post(`${localhost}/presupuesto`,data);
     window.location.replace("./index.html");
 }
 

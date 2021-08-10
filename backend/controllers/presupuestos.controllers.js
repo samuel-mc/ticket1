@@ -114,7 +114,7 @@ const obtenerPresupuestos = async (req, res) => {
 const eliminarPresupuestos = async (req,res) => {
     try {
         const { id } = req.params;
-        await Presupuesto.update({ eliminado: 0}, { where: { id_presupuestoBis: id } })
+        await Presupuesto.update({ eliminado: 1}, { where: { id_presupuestoBis: id } })
         res.status(200).json('Presupuesto eliminado con exito.');
     } catch (err) {
         res.status(400).json('Problema al eliminar el presupuestos: ' + err.message);

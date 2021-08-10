@@ -88,4 +88,10 @@ const enviarPresupuesto = (e, id_presupuesto) => {
     }     
 }
 
+const logout = (event) => {
+    event.preventDefault();
+    document.cookie = "token=; max-age=1";
+    window.location.replace("./login.html"); 
+}
+
 tablaPresupuestos();
