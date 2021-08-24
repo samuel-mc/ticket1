@@ -1,30 +1,32 @@
+const express = require('express');
+const app = express();
+
 const {
     checkDatosAlta,
     checkUsuarioExistente,
-    checkEmailExistente,
-    checkUsernameExistente
+    checkEmailExistente
 } = require('../middlewares/usuarios.mid')
 
 const { 
     crearUsuario,
-    obtenerUsuarios,
-    obtenerUnUsuarios,
+    obtenerTodosLosUsuarios,
+    obtenerUnUsuario,
     actualizarUsuario,
     eliminarUsuario,
-
-    loginUsuario,
     cambiarContraseña
-} = require('../controllers/users.controllers')
+} = require('../controllers/users.controllers');
 
-module.exports = (app) => { //Usando como referencia la clase 20
-    /* CRUD usuarios */
-    app.post('/usuarios', checkDatosAlta, checkEmailExistente, checkUsernameExistente, crearUsuario);
-    app.get('/usuarios', obtenerUsuarios);
-    app.get('/usuarios/:id', checkUsuarioExistente, obtenerUnUsuarios);
-    app.put('/usuarios/:id', checkUsuarioExistente, checkEmailExistente, checkDatosAlta, checkUsernameExistente, actualizarUsuario);
-    app.delete('/usuarios/:id', checkUsuarioExistente, eliminarUsuario);
-    
-    /* Rutas login */
-    app.post('/login', loginUsuario)
-    app.put('/password', cambiarContraseña)
-}
+const { loginUsuario } = require('../auth/login.controllers');
+
+/* CRUD usuarios */
+app.post('/usuarios', checkDatosAlta, checkEmailExistente, crearUsuario);
+app.get('/usuarios', obtenerTodosLosUsuarios);
+app.get('/usuarios/:id', checkUsuarioExistente, obtenerUnUsuario);
+app.put('/usuarios/:id', checkUsuarioExistente, actualizarUsuario);
+app.delete('/usuarios/:id', checkUsuarioExistente, eliminarUsuario);
+app.put('/password', cambiarContraseña)
+
+/* Rutas login */
+app.post('/login', loginUsuario);
+
+module.exports = app;

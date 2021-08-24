@@ -9,8 +9,8 @@ const sequelize = new Sequelize('presupuestos', null, null, {
       type: 'default',
       options: {
         encrypt: false, // for azure
-        userName: process.env.DB_USR,
-        password: process.env.DB_USR,
+        userName: 'sam',
+        password: '1234',
         trustServerCertificate: true, // change to true for local dev / self-signed certs
         cryptoCredentialsDetails: {
           minVersion: 'TLSv1'

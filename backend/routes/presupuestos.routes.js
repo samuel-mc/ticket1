@@ -1,3 +1,6 @@
+const express = require('express');
+const app = express();
+
 const { 
     crearIngreso,
     crearCostoDirecto,
@@ -7,16 +10,23 @@ const {
     obtenerPresupuestos,
     eliminarPresupuestos,
     obtenerIngresos
-} = require('../controllers/presupuestos.controllers')
+} = require('../controllers/presupuestos.controllers');
 
-module.exports = (app) => {
-    /* CRUD usuarios */
-    app.post('/ingresos', crearIngreso);
-    app.post('/costos-directos', crearCostoDirecto);
-    app.post('/costos-adm', crearCostoAdm);
-    app.post('/recursos', crearRecurso);
-    app.post('/presupuesto', crearPresupuesto);
-    app.get('/presupuesto', obtenerPresupuestos);
-    app.delete('/presupuesto/:id', eliminarPresupuestos);
-    app.get('/ingresos/:id', obtenerIngresos);
-}
+const {
+    checkDatosPresupuesto,
+    checkDatosIngresos,
+    checkDatosCostosDirectos,
+    checkDatosCostosAdmn
+} = require('../middlewares/presupuesto.mid')
+
+/* CRUD usuarios */
+app.post('/ingresos', checkDatosIngresos, crearIngreso);
+app.post('/costos-directos', checkDatosCostosDirectos, crearCostoDirecto);
+app.post('/costos-adm', checkDatosCostosAdmn, crearCostoAdm);
+app.post('/recursos', crearRecurso);
+app.post('/presupuesto', checkDatosPresupuesto, crearPresupuesto);
+app.get('/presupuesto', obtenerPresupuestos);
+app.delete('/presupuesto/:id', eliminarPresupuestos);
+app.get('/ingresos/:id', obtenerIngresos);
+
+module.exports = app;

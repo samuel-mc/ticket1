@@ -3,9 +3,8 @@ const registro = (event) => {
     const nombre = document.getElementById('nombre').value;
     const apellidos = document.getElementById('apellido').value;
     const email = document.getElementById('email').value;
-    const username = document.getElementById('usuario').value;
     const password  = document.getElementById('pass').value;
-    let data = { nombre, apellidos, email, username, password };
+    let data = { nombre, apellidos, email, password };
     fetchSignup(data);
     alert(`Usuario: ${email} agregado con exito`);
     window.location.replace("./login.html")

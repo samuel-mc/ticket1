@@ -5,10 +5,6 @@ const sequelize = require('./db/conexion');
 const cookieParser = require('cookie-parser')
 require('dotenv').config()
 
-/* Rutas utilizadas */
-const usuariosRoutes = require('./routes/users.routes');
-const presupuestosRoutes = require('./routes/presupuestos.routes');
-
 /* Middlewares Globales */
 app.use(express.json())
 app.use(cors())
@@ -26,7 +22,4 @@ app.listen(3030, async () => {
     }
 })
 
-//Rutas
-// app.use(require('./routes/index'))
-usuariosRoutes(app);
-presupuestosRoutes(app);
+app.use(require('./routes/index.routes'));

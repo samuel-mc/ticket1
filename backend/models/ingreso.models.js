@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const db = require('../db/conexion');
 
 /* Configuracion correspondiente al modelo de un ingreso . */
-const Ingreso = db.define('ingreso', {
+const ingresoModel = db.define('ingreso', {
     id_ingreso: {
         type: Sequelize.STRING,
         primaryKey: true,
@@ -13,7 +13,11 @@ const Ingreso = db.define('ingreso', {
     },
     id_presupuesto: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        references: {
+            model: 'presupuestos',
+            key: 'id_presupuesto'
+        }
     },
     createdAt: Sequelize.DATE,
     updatedAt: Sequelize.DATE
@@ -21,8 +25,8 @@ const Ingreso = db.define('ingreso', {
 }) ;
 
 /* Funcion que (si es necesario) crea la tabla usuarios */
-// Ingreso.sync().then( () => {
+// ingresoModel.sync().then( () => {
 //     console.log('Ingreso Creada');
 // })
 
-module.exports = { Ingreso };
+module.exports = { ingresoModel };

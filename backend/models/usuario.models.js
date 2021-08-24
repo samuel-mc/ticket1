@@ -20,10 +20,6 @@ usuarioModel = () => {
             type: Sequelize.STRING,
             allowNull: false
         },
-        username: {
-            type: Sequelize.STRING,
-            allowNull: false
-        },
         password: {
             type: Sequelize.STRING,
             allowNull: false
@@ -47,18 +43,4 @@ const createTablaUsuarios = () => {
     usuarioModel().sync();
 }
 
-const getByEmailUsername = (email = "", username ="") => {
-    const usuario = usuarioModel().findOne( { 
-        where: Sequelize.or (
-           { email: email },
-           { username: username}
-        )
-    })
-    return usuario;
-}
-
-class Usuario {
-    
-}
-
-module.exports = { Usuario, usuarioModel, getByEmailUsername}
+module.exports = { usuarioModel}

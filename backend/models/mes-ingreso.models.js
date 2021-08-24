@@ -5,6 +5,11 @@ const db = require('../db/conexion');
 const MesIgreso = db.define('mes_ingreso', {
     id_ingreso: {
         type: Sequelize.STRING,
+        allowNull: false,
+        references: {
+            model: 'ingresos',
+            key: 'id_ingreso'
+        }
     },
     mes: {
         type: Sequelize.STRING,

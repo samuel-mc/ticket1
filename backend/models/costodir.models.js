@@ -22,7 +22,11 @@ const CostoDirecto = db.define('costo_directo', {
     },
     id_presupuesto: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        references: {
+            model: 'presupuestos',
+            key: 'id_presupuesto'
+        }
     },
     
     createdAt: Sequelize.DATE,

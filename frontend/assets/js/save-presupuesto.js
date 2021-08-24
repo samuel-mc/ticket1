@@ -2,8 +2,17 @@ const localhost = 'http://localhost:3030'
 
 const guardarTodo = async (event) => {
     event.preventDefault();
-    let id_presupuesto = 'PR' + Date.now();
+    let id_presupuesto_front = 'PR' + Date.now();
     let concepto, cantidad;
+    
+    /* Post proyecto */
+    const proyecto = document.getElementById('proyecto').value
+    let data = {
+        id_presupuesto_front,
+        proyecto
+    }
+    await post(`${localhost}/presupuesto`,data);
+
     /* POST ingresos */
     const tableIngresos = document.getElementById('ingresos');
     for (let i = 1; i < tableIngresos.rows.length - 1; i++) {
@@ -21,7 +30,7 @@ const guardarTodo = async (event) => {
         let data = {
             concepto,
             ingresoPorMes,
-            id_presupuesto
+            id_presupuesto_front
         }
         await post(`${localhost}/ingresos`,data);
     }
@@ -40,7 +49,7 @@ const guardarTodo = async (event) => {
                 concepto,
                 mes,
                 cantidad,
-                id_presupuesto
+                id_presupuesto_front
             }
             await post(`${localhost}/costos-directos`,data);
         }        
@@ -60,7 +69,7 @@ const guardarTodo = async (event) => {
                 concepto,
                 mes,
                 cantidad,
-                id_presupuesto
+                id_presupuesto_front
             }
             await post(`${localhost}/costos-adm`,data);
         }        
@@ -80,18 +89,11 @@ const guardarTodo = async (event) => {
                 costo,
                 mes,
                 porcentaje,
-                id_presupuesto
+                id_presupuesto_front
             }
             await post(`${localhost}/recursos`,data);
         }        
     }
-
-    const proyecto = document.getElementById('proyecto').value
-    let data = {
-        id_presupuesto,
-        proyecto
-    }
-    await post(`${localhost}/presupuesto`,data);
     window.location.replace("./index.html");
 }
 

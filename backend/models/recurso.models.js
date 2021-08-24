@@ -26,7 +26,11 @@ const Recurso = db.define('recurso', {
     },
     id_presupuesto: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        references: {
+            model: 'presupuestos',
+            key: 'id_presupuesto'
+        }
     },
     
     createdAt: Sequelize.DATE,
