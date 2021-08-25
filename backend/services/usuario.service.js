@@ -48,9 +48,10 @@ class Usuario {
         usuarioModel().update({ eliminado: 1 }, { where: { id_usuario: this.id_usuario } });
     }
 
-    cambiarContraseña (email, password) {
+    cambiarContraseña (password) {
         try {
-            usuarioModel().update({ password },{ where: { email } });
+            usuarioModel().update({ password },{ where: { id_usuario: this.id_usuario } });
+            console.log(this.id_usuario, ' cambiado');
         } catch (err) {
             throw new Error(err);
         }

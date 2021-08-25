@@ -1,11 +1,6 @@
 const { Presupuesto, getPresupuestos } = require('../services/presupuesto.service')
 
-const { Ingreso } = require('../models/ingreso.models');
-const { Recurso } = require('../models/recurso.models');
-// const { Presupuesto, getPresupuestos } = require('../models/presupuesto.models');
-
 const { v4: uuidv4 } = require('uuid');
-const jwt = require('jsonwebtoken')
 
 const crearPresupuesto = async (req, res) => {
     const { id_presupuesto_front, proyecto} = req.body;
@@ -88,16 +83,16 @@ const eliminarPresupuestos = async (req,res) => {
     }
 }
 
-const obtenerIngresos = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const ingresos = await Ingreso.findAll({ where: { id_presupuesto: id } })
-        console.log(ingresos);
-        res.status(200).json(ingresos);
-    } catch (err) {
-        res.status(400).json('Problema al leer los costos: ' + err.message);
-    }        
-}
+// const obtenerIngresos = async (req, res) => {
+//     try {
+//         const { id } = req.params;
+//         const ingresos = await Ingreso.findAll({ where: { id_presupuesto: id } })
+//         console.log(ingresos);
+//         res.status(200).json(ingresos);
+//     } catch (err) {
+//         res.status(400).json('Problema al leer los costos: ' + err.message);
+//     }        
+// }
 
 
 
@@ -108,7 +103,6 @@ module.exports = {
     crearRecurso,
     crearPresupuesto,
     obtenerPresupuestos,
-    eliminarPresupuestos,
-    obtenerIngresos
+    eliminarPresupuestos
 
 }

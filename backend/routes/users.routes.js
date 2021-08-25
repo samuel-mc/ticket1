@@ -7,12 +7,15 @@ const {
     checkEmailExistente
 } = require('../middlewares/usuarios.mid')
 
+const { validarToken } = require('../auth/middlewares/token.midd');
+
 const { 
     crearUsuario,
     obtenerTodosLosUsuarios,
     obtenerUnUsuario,
     actualizarUsuario,
     eliminarUsuario,
+    olvidoContrasena,
     cambiarContraseña
 } = require('../controllers/users.controllers');
 
@@ -24,7 +27,9 @@ app.get('/usuarios', obtenerTodosLosUsuarios);
 app.get('/usuarios/:id', checkUsuarioExistente, obtenerUnUsuario);
 app.put('/usuarios/:id', checkUsuarioExistente, actualizarUsuario);
 app.delete('/usuarios/:id', checkUsuarioExistente, eliminarUsuario);
-app.put('/password', cambiarContraseña)
+
+app.post('/forgot-password', olvidoContrasena);
+app.put('/cambiar-password', validarToken, cambiarContraseña)
 
 /* Rutas login */
 app.post('/login', loginUsuario);

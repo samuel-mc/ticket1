@@ -25,32 +25,3 @@ async function fetchSignup(data = {}) {
         console.log(err);
     }
 }
-
-const cambioPass = async (event) => {
-    event.preventDefault();
-    const email = document.getElementById('email').value;
-    const password  = document.getElementById('pass').value;
-    try {
-        let data = { email, password };
-        fetchPass(data);
-        alert(`Password de ${email} cambiado con exito`);
-        window.location.replace("./login.html")
-    } catch (err) {
-        console.log(err);
-    }
-}
-
-async function fetchPass(data = {}) {
-    try {
-        const response = await fetch('http://localhost:3030/password', {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json'
-           
-          },
-          body: JSON.stringify(data)
-        });
-    } catch (err) {
-        console.log(err);
-    }
-}

@@ -9,7 +9,6 @@ const {
     crearPresupuesto,
     obtenerPresupuestos,
     eliminarPresupuestos,
-    obtenerIngresos
 } = require('../controllers/presupuestos.controllers');
 
 const {
@@ -27,6 +26,6 @@ app.post('/recursos', crearRecurso);
 app.post('/presupuesto', checkDatosPresupuesto, crearPresupuesto);
 app.get('/presupuesto', obtenerPresupuestos);
 app.delete('/presupuesto/:id', eliminarPresupuestos);
-app.get('/ingresos/:id', obtenerIngresos);
+// app.get('/ingresos/:id', obtenerIngresos);
 
 module.exports = app;
