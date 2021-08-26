@@ -3,6 +3,7 @@ const { crearJWT } = require('../services/crearJWT.service');
 const bcrypt = require('bcrypt');
 
 const loginUsuario = async (req, res) => {
+    console.log('Login');
     try {
         const usuario = await encontrarPorEmail(req.body.email);
         if (!usuario) {

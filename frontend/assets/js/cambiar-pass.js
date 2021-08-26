@@ -1,32 +1,27 @@
 const solicitarCambioPass = async (event) => {
     event.preventDefault();
+
     const email = document.getElementById('email').value;
+    let data = { email };
+
+    const api = new Api('POST', 'forgot-password', data );
     try {
-        let data = { email };
-        fetchPass(data);
-        alert(`Se mando un correo a ${email}`);
-        window.location.replace("./login.html")
+        const response = await api.hacerFetch();
+        if (response.status === 200) {
+            alert(`Se mando un correo a ${email}`);
+            window.location.replace("./login.html")
+        }  else {
+            response.json().then(data => {
+              alert(data);
+              return;
+          });
+        }
     } catch (err) {
         console.log(err);
     }
 }
 
-async function fetchPass(data = {}) {
-    try {
-        const response = await fetch('http://localhost:3030/forgot-password', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-           
-          },
-          body: JSON.stringify(data)
-        });
-    } catch (err) {
-        console.log(err);
-    }
-}
-
-const setNuevoPassword = (event) => {
+const setNuevoPassword = async (event) => {
     event.preventDefault();
 
     const queryString = window.location.search;
@@ -35,23 +30,20 @@ const setNuevoPassword = (event) => {
 
     const password = document.getElementById('password').value;
     const data = { password };
-    fetchCambioPass(data, token);
-    alert('Contraseña modificada con exito');
-    window.location.replace("./login.html");
-}
+    
+    const api = new Api('PUT', 'cambiar-password', data );
+    api.token = token;
 
-async function fetchCambioPass(data = {}, token) {
-    try {
-        const response = await fetch('http://localhost:3030/cambiar-password', {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-           
-          },
-          body: JSON.stringify(data)
-        });
-    } catch (err) {
-        console.log(err);
+    const response = await api.hacerFetch();
+
+    if (response.status == 200) {
+        alert('Contraseña modificada con exito');
+        window.location.replace("./login.html");        
+    } else {
+        response.json().then(data => {
+            console.log(data);
+            alert(data);          
+            return;
+      });
     }
 }

@@ -30,7 +30,7 @@ module.exports.checkEmailExistente = async (req, res, next) => {
         if (!usuario) {
             return next();
         } else {
-            res.status(404).json('El email ya esta registrado.');
+            res.status(400).json('El email ya esta registrado.');
         }
     } catch (err) {
         throw new Error(err.message);

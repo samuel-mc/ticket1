@@ -2,8 +2,9 @@ const jwt = require('jsonwebtoken');
 
 /* Valida que exista un token */
 const validarToken = (req, res, next) => {
+    console.log(req.headers.authorization);
     try {
-        const token = req.headers.authorization.split(' ')[1]
+        const token = req.headers.authorization.split(' ')[1];
         req.id = jwt.verify(token, 'secretkey').id_usuario; //VErifica que sea un token valido y asigna el id a una variable
         next();
     } catch (err) {
