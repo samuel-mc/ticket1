@@ -6,10 +6,9 @@ const validarLoginForm = async(event) => {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     let data = { email , password };
-    const api = new Api('POST', 'login', data);
-    console.log(api.url,api.ruta);
+    const api = new Api();
     try {
-        const response = await api.hacerFetch();
+        const response = await api.hacerFetch('POST', 'login', data, '');
         if (response.status === 200) {
             response.json().then(data => {
                 document.cookie = `token=${data}`;

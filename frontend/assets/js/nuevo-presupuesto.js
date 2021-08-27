@@ -176,7 +176,6 @@ const fillFlujoEfectivo = () => {
                 tableFlujoEfectivo.rows[4].cells[i].className = '';
             }
         }
-        console.log(acumulado);
         tableFlujoEfectivo.rows[4].cells[i].innerHTML = acumulado;
     }
     totalColumna('tableFlujoEfectivo');

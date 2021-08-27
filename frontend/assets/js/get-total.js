@@ -33,7 +33,6 @@ const totalFilaPorcentajes = (tabla) => {
             const porcentaje = tbl.rows[i].cells[j].children[0].value
             total += parseFloat(porcentaje);
         }
-        console.log(total);
         tbl.rows[i].cells[tbl.rows[0].cells.length - 1].innerHTML = total/(tbl.rows[0].cells.length - 3) + '%';
     }
 }

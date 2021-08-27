@@ -1,8 +1,6 @@
 window.onload = function() {
     let token = getToken();
-    if (token){
-        console.log(token);
-    } else {
+    if (!token) {        
         alert('Necesitas iniciar sesión!');
         window.location.replace("./login.html");
     }
@@ -17,11 +15,10 @@ const getToken = () => {
 const tablaPresupuestos = async () => {
     const contPresupuestos = document.getElementById('contPresupuestos');
 
-    const api = new Api('GET', 'presupuesto', '');
+    const api = new Api();
     const token = getToken();
-    api.token = token;
 
-    const response = await api.hacerFetch();
+    const response = await api.hacerFetch('GET', 'presupuesto', '', token);
     response.json().then(data => {
         data.forEach(presupuesto => {
             const tr = document.createElement('tr');
@@ -65,14 +62,13 @@ const tablaPresupuestos = async () => {
 const removePresupuesto = async (e, id_presupuesto) => {
     e.preventDefault();
 
-    const api = new Api('DELETE', `presupuesto/${id_presupuesto}`, '');
+    const api = new Api();
     const token = getToken();
-    api.token = token;
 
     let opcion = confirm("¿Estás seguro?");
     if (opcion) {
         try {
-            const response = await api.hacerFetch();
+            const response = await api.hacerFetch('DELETE', `presupuesto/${id_presupuesto}`, '', token);
             if (response.status) {
                 alert("Presupuesto eliminado exitosamente.")
                 window.location.replace("./index.html");            

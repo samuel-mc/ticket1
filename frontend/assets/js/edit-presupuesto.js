@@ -1,7 +1,7 @@
 const editarPresupuesto = (e, id_presupuesto) => {
     const contenedorIngresos = document.getElementById('contenedorIngresos');
-    const api = new Api('GET', `ingresos/${id_presupuesto}`, '');
-    const response = await api.hacerFetch()
+    const api = new Api();
+    const response = await api.hacerFetch('GET', `ingresos/${id_presupuesto}`, '', '');
         response.json().then(data => {
             console.log(data);
         });

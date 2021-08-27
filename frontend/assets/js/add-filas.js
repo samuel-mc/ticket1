@@ -138,7 +138,6 @@ const porcentajesCDModal = (event) => {
     let rowLength = tableCostosDirectos.rows.length;
     let cellLength = tableCostosDirectos.rows[0].cells.length;
     let total = 0;
-    console.log(numFilas);
     for (let j = 1; j < cellLength - 1; j++) {
         total = 0;
         if (ingresos) {
@@ -150,7 +149,6 @@ const porcentajesCDModal = (event) => {
         if (recostos) {
             total += parseFloat(tableCostosRecursos.rows[filasRecursos +1].cells[j].innerHTML);
         }
-        console.log(total);
         tableCostosDirectos.rows[rowLength - 2].cells[j+1].innerHTML = (total*(porcentaje/100));
     }
     $('#porcentajesCDModal').modal('hide'); 
@@ -231,7 +229,6 @@ const opcionesGAModal = (event) => {
     let rowLength = tableGastosAdm.rows.length;
     let cellLength = tableGastosAdm.rows[0].cells.length;
     let total = 0;
-    console.log(numFilas);
     for (let j = 1; j < cellLength - 1; j++) {
         total = 0;
         if (ingresos) {
@@ -266,7 +263,6 @@ const porcentajesGAModal = (event) => {
     let rowLength = tableGastosAdm.rows.length;
     let cellLength = tableGastosAdm.rows[0].cells.length;
     let total = 0;
-    console.log(numFilas);
     for (let j = 1; j < cellLength - 1; j++) {
         total = 0;
         if (ingresos) {
@@ -278,7 +274,6 @@ const porcentajesGAModal = (event) => {
         if (recostos) {
             total += parseFloat(tableCostosRecursos.rows[filasRecursos +1].cells[j].innerHTML);
         }
-        console.log(total);
         tableGastosAdm.rows[rowLength - 2].cells[j+1].innerHTML = (total*(porcentaje/100));
     }
     $('#porcentajesGAModal').modal('hide'); 

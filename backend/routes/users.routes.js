@@ -19,7 +19,7 @@ const {
     cambiarContraseña
 } = require('../controllers/users.controllers');
 
-const { loginUsuario } = require('../auth/login.controllers');
+const { loginUsuario } = require('../auth/controllers/login.controllers');
 
 /* CRUD usuarios */
 app.post('/usuarios', checkDatosAlta, checkEmailExistente, crearUsuario);

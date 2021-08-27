@@ -4,10 +4,11 @@ const { v4: uuidv4 } = require('uuid');
 
 const crearPresupuesto = async (req, res) => {
     const { id_presupuesto_front, proyecto} = req.body;
+    const id_usuario = req.id;
     const id_unico = id_presupuesto_front + 'mx-1609';
     const presupuesto = new Presupuesto(id_unico);
     try {
-        await presupuesto.darDeAlta('6d5b00a9-97c6-4601-aee5-8035ac0aac5e', id_presupuesto_front, proyecto);
+        await presupuesto.darDeAlta(id_usuario, id_presupuesto_front, proyecto);
         res.status(201).json({ 'message': 'Presupuesto agregado con exito.' });
     } catch (err) {
         res.status(400).json({ 'message': 'Problema al crear el Presupuesto: ' + err.message });

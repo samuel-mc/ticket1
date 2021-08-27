@@ -51,7 +51,6 @@ class Usuario {
     cambiarContraseña (password) {
         try {
             usuarioModel().update({ password },{ where: { id_usuario: this.id_usuario } });
-            console.log(this.id_usuario, ' cambiado');
         } catch (err) {
             throw new Error(err);
         }

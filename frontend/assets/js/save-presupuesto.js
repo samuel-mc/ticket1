@@ -2,6 +2,9 @@ const localhost = 'http://localhost:3030'
 
 const guardarTodo = async (event) => {
     event.preventDefault();
+    
+    const token = document.cookie.split('=')[1];
+
     let id_presupuesto_front = 'PR' + Date.now();
     let concepto, cantidad;
     
@@ -11,7 +14,8 @@ const guardarTodo = async (event) => {
         id_presupuesto_front,
         proyecto
     }
-    await post(`${localhost}/presupuesto`,data);
+    const api = new Api();
+    await api.hacerFetch('POST', 'presupuesto', data, token);
 
     /* POST ingresos */
     const tableIngresos = document.getElementById('ingresos');

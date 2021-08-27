@@ -2,6 +2,7 @@ const { Usuario, obtenerUsuarios, encontrarPorEmail} = require('../services/usua
 const nodemailer = require("nodemailer");
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
+const { cifrarPassword } = require('../auth/services/password.service')
 const { crearJWT } = require('../services/crearJWT.service');
 
 
@@ -9,7 +10,9 @@ const crearUsuario = async (req, res) => {
     const id_usuario = uuidv4();
     const usuario = new Usuario(id_usuario);
     const { nombre, apellidos, email, password} = req.body;
-    const passHas = await bcrypt.hash(password, 10);
+
+    const passHas = cifrarPassword(password); //Se cifra el password
+
     try {
         await usuario.darDeAlta(nombre, apellidos, email, passHas);
         res.status(201).json({ 'message': 'Usuario creado con éxito.' });

@@ -7,9 +7,8 @@ const registro = async (event) => {
     const password  = document.getElementById('pass').value;
     let data = { nombre, apellidos, email, password };
     
-    const api = new Api('POST', 'usuarios', data);
-    const response = await api.hacerFetch();
-    console.log(response);
+    const api = new Api();
+    const response = await api.hacerFetch('POST', 'usuarios', data, '');
     if(response.status == 201) {
       alert(`Usuario: ${email} agregado con exito`);
       window.location.replace("./login.html")

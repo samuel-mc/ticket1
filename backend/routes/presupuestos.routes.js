@@ -16,16 +16,18 @@ const {
     checkDatosIngresos,
     checkDatosCostosDirectos,
     checkDatosCostosAdmn
-} = require('../middlewares/presupuesto.mid')
+} = require('../middlewares/presupuesto.mid');
+
+const { validarToken } = require('../auth/middlewares/token.midd');
 
 /* CRUD usuarios */
-app.post('/ingresos', checkDatosIngresos, crearIngreso);
-app.post('/costos-directos', checkDatosCostosDirectos, crearCostoDirecto);
-app.post('/costos-adm', checkDatosCostosAdmn, crearCostoAdm);
-app.post('/recursos', crearRecurso);
-app.post('/presupuesto', checkDatosPresupuesto, crearPresupuesto);
-app.get('/presupuesto', obtenerPresupuestos);
-app.delete('/presupuesto/:id', eliminarPresupuestos);
+app.post('/ingresos', validarToken, checkDatosIngresos, crearIngreso);
+app.post('/costos-directos', validarToken, checkDatosCostosDirectos, crearCostoDirecto);
+app.post('/costos-adm', validarToken, checkDatosCostosAdmn, crearCostoAdm);
+app.post('/recursos', validarToken, crearRecurso);
+app.post('/presupuesto', validarToken, checkDatosPresupuesto, crearPresupuesto);
+app.get('/presupuesto', validarToken, obtenerPresupuestos);
+app.delete('/presupuesto/:id', validarToken, eliminarPresupuestos);
 // app.get('/ingresos/:id', obtenerIngresos);
 
 module.exports = app;

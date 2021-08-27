@@ -4,9 +4,9 @@ const solicitarCambioPass = async (event) => {
     const email = document.getElementById('email').value;
     let data = { email };
 
-    const api = new Api('POST', 'forgot-password', data );
+    const api = new Api();
     try {
-        const response = await api.hacerFetch();
+        const response = await api.hacerFetch('POST', 'forgot-password', data, '');
         if (response.status === 200) {
             alert(`Se mando un correo a ${email}`);
             window.location.replace("./login.html")
@@ -31,17 +31,15 @@ const setNuevoPassword = async (event) => {
     const password = document.getElementById('password').value;
     const data = { password };
     
-    const api = new Api('PUT', 'cambiar-password', data );
-    api.token = token;
+    const api = new Api( );
 
-    const response = await api.hacerFetch();
+    const response = await api.hacerFetch('PUT', 'cambiar-password', data, token);
 
     if (response.status == 200) {
         alert('Contraseña modificada con exito');
         window.location.replace("./login.html");        
     } else {
         response.json().then(data => {
-            console.log(data);
             alert(data);          
             return;
       });
