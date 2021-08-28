@@ -18,7 +18,7 @@ const tablaPresupuestos = async () => {
     const api = new Api();
     const token = getToken();
 
-    const response = await api.hacerFetch('GET', 'presupuesto', '', token);
+    const response = await api.hacerFetch('GET', 'presupuesto', '', '');
     response.json().then(data => {
         data.forEach(presupuesto => {
             const tr = document.createElement('tr');

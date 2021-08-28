@@ -10,9 +10,7 @@ const crearUsuario = async (req, res) => {
     const id_usuario = uuidv4();
     const usuario = new Usuario(id_usuario);
     const { nombre, apellidos, email, password} = req.body;
-
-    const passHas = cifrarPassword(password); //Se usa el servicio encargado de cifrar el password
-
+    const passHas = await cifrarPassword(password); //Se usa el servicio encargado de cifrar el password
     try {
         await usuario.darDeAlta(nombre, apellidos, email, passHas); //Se usa el servicio encargado de guardar un nuevo usuario
         res.status(201).json({ 'message': 'Usuario creado con éxito.' });

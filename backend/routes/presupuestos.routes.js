@@ -22,7 +22,7 @@ const { validarToken } = require('../auth/middlewares/token.midd');
 
 /* CRUD presupuestos */
 app.post('/presupuesto', validarToken, checkDatosPresupuesto, crearPresupuesto);
-app.get('/presupuesto', validarToken, obtenerPresupuestos);
+app.get('/presupuesto', obtenerPresupuestos);
 app.post('/ingresos', validarToken, checkDatosIngresos, crearIngreso);
 app.post('/costos-directos', validarToken, checkDatosCostosDirectos, crearCostoDirecto);
 app.post('/costos-adm', validarToken, checkDatosCostosAdmn, crearCostoAdm);

@@ -9,6 +9,7 @@ class Api {
     /** Metodo para realizar un fetch, recibe como parametros el metodo necesitado, la ruta requeridad y si es necesario un token y los datos a enviar */
     async hacerFetch (metodo, ruta, data, token) {
         const url = this.url  + '/' + ruta; //Concatenamos la ruta dada como parametro con la url
+        console.log(url);
         let config = {
             method: `${metodo}`,
             mode: 'cors',
