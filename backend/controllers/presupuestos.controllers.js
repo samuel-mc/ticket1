@@ -1,20 +1,22 @@
-const { Presupuesto, getPresupuestos } = require('../services/presupuesto.service')
+const { Presupuesto } = require('../services/presupuesto.service')
 
 const { v4: uuidv4 } = require('uuid');
 
+/* Controlador que genera un nuevo presupuesto */
 const crearPresupuesto = async (req, res) => {
     const { id_presupuesto_front, proyecto} = req.body;
     const id_usuario = req.id;
-    const id_unico = id_presupuesto_front + 'mx-1609';
+    const id_unico = id_presupuesto_front + 'mx-1609'; //Concatenamos el id recibido con una cadena para guardar un nuevo id
     const presupuesto = new Presupuesto(id_unico);
     try {
-        await presupuesto.darDeAlta(id_usuario, id_presupuesto_front, proyecto);
+        await presupuesto.darDeAlta(id_usuario, id_presupuesto_front, proyecto); //Se usa el servicio encargado de guardar el presupuesto
         res.status(201).json({ 'message': 'Presupuesto agregado con exito.' });
     } catch (err) {
         res.status(400).json({ 'message': 'Problema al crear el Presupuesto: ' + err.message });
     }
 }
 
+/* Controlador que regresa los presupuestos en la base de datos */
 const obtenerPresupuestos = async (req, res) => {
     try {
         presupuestos = await getPresupuestos();
@@ -24,6 +26,7 @@ const obtenerPresupuestos = async (req, res) => {
     }
 }
 
+/* Crea un nuevo ingreso */
 const crearIngreso = async (req, res) => {
     const { concepto, ingresoPorMes, id_presupuesto_front } = req.body;
     const id_presupuesto = id_presupuesto_front + 'mx-1609';
@@ -37,6 +40,7 @@ const crearIngreso = async (req, res) => {
     }
 }
 
+/* Crea un nuevo costo directo */
 const crearCostoDirecto = async (req, res) => {
     const { concepto, mes, cantidad, id_presupuesto_front } = req.body;
     const id_presupuesto = id_presupuesto_front + 'mx-1609';
@@ -49,6 +53,7 @@ const crearCostoDirecto = async (req, res) => {
     }
 }
 
+/* Crea un nuevo costo administrativo */
 const crearCostoAdm = async (req, res) => {
     const { concepto, mes, cantidad, id_presupuesto_front } = req.body;
     const id_presupuesto = id_presupuesto_front + 'mx-1609';
@@ -61,9 +66,10 @@ const crearCostoAdm = async (req, res) => {
     }
 }
 
+/* Crea un nuevo recurso */
 const crearRecurso = async (req, res) => {
     const {  rol, costo, mes, porcentaje, id_presupuesto_front} = req.body;
-    const id_presupuesto = id_presupuesto_front + 'mx-1609';
+    const id_presupuesto = id_presupuesto_front + 'mx-1609'; 
     const presupuesto = new Presupuesto(id_presupuesto);
     try {
         await presupuesto.agregarRecurso(rol, costo, mes, porcentaje);
@@ -73,6 +79,7 @@ const crearRecurso = async (req, res) => {
     }
 }
 
+/* Elimina un presupuesto */
 const eliminarPresupuestos = async (req,res) => {
     const id_presupuesto = req.params.id + 'mx-1609';
     try {
@@ -83,18 +90,6 @@ const eliminarPresupuestos = async (req,res) => {
         res.status(400).json('Problema al eliminar el presupuestos: ' + err.message);
     }
 }
-
-// const obtenerIngresos = async (req, res) => {
-//     try {
-//         const { id } = req.params;
-//         const ingresos = await Ingreso.findAll({ where: { id_presupuesto: id } })
-//         console.log(ingresos);
-//         res.status(200).json(ingresos);
-//     } catch (err) {
-//         res.status(400).json('Problema al leer los costos: ' + err.message);
-//     }        
-// }
-
 
 
 module.exports = { 

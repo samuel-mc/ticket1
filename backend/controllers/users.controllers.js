@@ -5,22 +5,23 @@ const bcrypt = require('bcrypt');
 const { cifrarPassword } = require('../auth/services/password.service')
 const { crearJWT } = require('../services/crearJWT.service');
 
-
+/* Controlador para crear un nuevo usuario  */
 const crearUsuario = async (req, res) => {
     const id_usuario = uuidv4();
     const usuario = new Usuario(id_usuario);
     const { nombre, apellidos, email, password} = req.body;
 
-    const passHas = cifrarPassword(password); //Se cifra el password
+    const passHas = cifrarPassword(password); //Se usa el servicio encargado de cifrar el password
 
     try {
-        await usuario.darDeAlta(nombre, apellidos, email, passHas);
+        await usuario.darDeAlta(nombre, apellidos, email, passHas); //Se usa el servicio encargado de guardar un nuevo usuario
         res.status(201).json({ 'message': 'Usuario creado con éxito.' });
     } catch (err) {
         res.status(400).json({ 'message': 'Problema al crear el usuario: ' + err.message });
     }
 }
 
+/* Controlador que muestra todos los usuarios en la bd */
 const obtenerTodosLosUsuarios = async (req, res) => {
     try {
         const usuarios = await obtenerUsuarios();
@@ -30,6 +31,7 @@ const obtenerTodosLosUsuarios = async (req, res) => {
     }
 }
 
+/* Controlador que muestra sólo un usuario */
 const obtenerUnUsuario = async (req, res) => {
     const id_usuario = req.params.id;
     const usuario = new Usuario(id_usuario);;
@@ -41,6 +43,7 @@ const obtenerUnUsuario = async (req, res) => {
     }
 }
 
+/* Controlador para modificar la informacion de un usuario */
 const actualizarUsuario = async (req, res) => {
     const id_usuario = req.params.id;
     const usuario = new Usuario(id_usuario);
@@ -53,6 +56,7 @@ const actualizarUsuario = async (req, res) => {
     }
 }
 
+/* Controlador para dar de baja a un usuario */
 const eliminarUsuario = async (req, res) => {
     const id_usuario = req.params.id;
     const usuario = new Usuario(id_usuario);
@@ -64,13 +68,14 @@ const eliminarUsuario = async (req, res) => {
     }
 }
 
+/* Controlador que manda un email para recuperar contraseña */
 const olvidoContrasena = async(req, res) => {
     const { email } = req.body;
     const usuario = await encontrarPorEmail(email);
     if (!usuario) {
         return res.status(400).json('Datos erroneos')
     }
-    const token = await crearJWT(usuario.dataValues.id_usuario);
+    const token = await crearJWT(usuario.dataValues.id_usuario); //Se genera un token que servira para comprobar el cambio.
     try {
         const transporter = nodemailer.createTransport({
             host: 'smtp.ethereal.email',
@@ -86,8 +91,8 @@ const olvidoContrasena = async(req, res) => {
             to: email,
             subject: "🚨🚨 Cambiar password 🚨🚨",
             html: ` <p> Restablecer Password: 
-                        <a> http://127.0.0.1:5501/frontend/cambiar-pass.html?token=${token} </a> 
-                    </p>`,
+                        <a> http://127.0.0.1:5501/frontend/cambiar-pass.html?token=${token} </a>
+                    </p>`, // Se manda el link con el token correspondiente
         }
 
         transporter.sendMail(mailOptions, (err, info) => {
@@ -105,6 +110,7 @@ const olvidoContrasena = async(req, res) => {
     }
 }
 
+/* Controlador que modifica el password de un usuario */ 
 const cambiarContraseña = async (req, res) => {
     const id_usuario = req.id;
     const { password } = req.body;

@@ -1,3 +1,4 @@
+/* Funcion que manda un nuevo usuario al back end */
 const registro = async (event) => {
     event.preventDefault();
 

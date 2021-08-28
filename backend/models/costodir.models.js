@@ -24,7 +24,7 @@ const CostoDirecto = db.define('costo_directo', {
         type: Sequelize.STRING,
         allowNull: false,
         references: {
-            model: 'presupuestos',
+            model: 'presupuestos', //Llave foranea que hace referencia a la tabla presupuestos.
             key: 'id_presupuesto'
         }
     },

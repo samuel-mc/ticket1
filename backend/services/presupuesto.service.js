@@ -7,15 +7,17 @@ const { CostoDirecto } = require('../models/costodir.models');
 const { CostoAdm } = require('../models/costoadm.models');
 const { Recurso } = require('../models/recurso.models');
 
+/* Clase para implementar el modelo presupuesto */
 class Presupuesto {
     constructor (id_presupuesto) {
         this.id_presupuesto = id_presupuesto;
     }
 
+    /* Agregamos el presupuesto a la base de datos */
     darDeAlta (id_usuario, id_presupuesto_front, proyecto) {
         try {
             presupuestoModel.create({
-                id_presupuesto: this.id_presupuesto,
+                id_presupuesto: this.id_presupuesto, //Tomamos como id, el que se determina al instanciar la clase
                 id_presupuesto_front,
                 id_usuario,
                 version: 1,
@@ -27,6 +29,7 @@ class Presupuesto {
         }
     }
 
+    /* Agregamos los recursos correspondientes */
     agregarIngresos (id_ingreso, concepto, ingresoPorMes) {
         try {
             ingresoModel.create({
@@ -88,6 +91,7 @@ class Presupuesto {
         }
     }
 
+    /* Borramos de manera logica cierto presupuesto */
     darDeBaja () {
         try {
             presupuestoModel.update({ eliminado: 1}, { where: { id_presupuesto: this.id_presupuesto } })
@@ -98,9 +102,10 @@ class Presupuesto {
 
 }
 
+/* Obtenemos un conjunto de presupuestos */
 const getPresupuestos = () => {
     try {
-        const presupuesto = db.query('SELECT * FROM presupuestos WHERE eliminado <> 1');
+        const presupuesto = db.query('SELECT * FROM presupuestos WHERE eliminado <> 1'); //Selecciona los que no esten eliminados.
         return presupuesto;
     } catch (err) {
         throw new Error(err);

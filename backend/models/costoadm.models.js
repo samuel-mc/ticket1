@@ -23,7 +23,7 @@ const CostoAdm = db.define('gasto_administrativo', {
     id_presupuesto: {
         type: Sequelize.STRING,
         allowNull: false,
-        references: {
+        references: { //Llave foranea que hace referencia a la tabla presupuestos.
             model: 'presupuestos',
             key: 'id_presupuesto'
         }

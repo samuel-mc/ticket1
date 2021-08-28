@@ -15,7 +15,8 @@ const presupuestoModel = db.define('presupuesto', {
         type: Sequelize.STRING,
         allowNull: false,
         references: {
-            key: 'id_usuario'
+            model: 'usuario', 
+            key: 'id_usuario'  //Llave foranea que hace referencia a la tabla usuarios.
         }
     },
     proyecto: {

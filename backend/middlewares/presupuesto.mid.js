@@ -7,6 +7,7 @@ const {
 
 const Joi = require("joi");
 
+/* Middlewares que verifica si los datos recibidos son correctos  */
 const checkDatosPresupuesto = async (req, res, next) => {
     try {
         await Joi.attempt(req.body, altaPresupuestoDTO, "Los datos enviados no son correctos.");

@@ -28,7 +28,7 @@ const Recurso = db.define('recurso', {
         type: Sequelize.STRING,
         allowNull: false,
         references: {
-            model: 'presupuestos',
+            model: 'presupuestos',  //Llave foranea que hace referencia a la tabla presupuestos.
             key: 'id_presupuesto'
         }
     },

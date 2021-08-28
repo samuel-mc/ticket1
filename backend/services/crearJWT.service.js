@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
+/* Servicio que crea un token */
 const crearJWT = (id_usuario = '') => {
     return new Promise((resolve, reject) => {
         //verificar solo el id_usuario

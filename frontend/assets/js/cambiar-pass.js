@@ -1,10 +1,11 @@
+/* Funcion para solicitar el correo para el cambio de contraseña */
 const solicitarCambioPass = async (event) => {
     event.preventDefault();
 
     const email = document.getElementById('email').value;
     let data = { email };
 
-    const api = new Api();
+    const api = new Api(); //Se crea la instancia de la class Api
     try {
         const response = await api.hacerFetch('POST', 'forgot-password', data, '');
         if (response.status === 200) {
@@ -21,12 +22,13 @@ const solicitarCambioPass = async (event) => {
     }
 }
 
+/* Hace el fetch para el cambio de constraseña */
 const setNuevoPassword = async (event) => {
     event.preventDefault();
 
-    const queryString = window.location.search;
+    const queryString = window.location.search; 
     const urlParams = new URLSearchParams(queryString);
-    const token = urlParams.get('token');
+    const token = urlParams.get('token'); //Se obtiene el token dado como query
 
     const password = document.getElementById('password').value;
     const data = { password };

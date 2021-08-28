@@ -1,11 +1,10 @@
-const localhost = 'http://localhost:3030'
-
+/* Funcion que envia al back todos los datos de un presupuesto */
 const guardarTodo = async (event) => {
     event.preventDefault();
     
-    const token = document.cookie.split('=')[1];
-
-    let id_presupuesto_front = 'PR' + Date.now();
+    const token = document.cookie.split('=')[1]; // Obtenemos el token guardado en las cookies
+    
+    let id_presupuesto_front = 'PR' + Date.now(); // Se crea un id para el front
     let concepto, cantidad;
     
     /* Post proyecto */
@@ -14,12 +13,12 @@ const guardarTodo = async (event) => {
         id_presupuesto_front,
         proyecto
     }
-    const api = new Api();
-    await api.hacerFetch('POST', 'presupuesto', data, token);
+    const api = new Api(); //Se hace la instancia de la clase api
+    await api.hacerFetch('POST', 'presupuesto', data, token); //Se hace el post correspondiente
 
     /* POST ingresos */
     const tableIngresos = document.getElementById('ingresos');
-    for (let i = 1; i < tableIngresos.rows.length - 1; i++) {
+    for (let i = 1; i < tableIngresos.rows.length - 1; i++) { //Se crea hacen las iteraciones correspondientes para obtener los datos de cada fila
         let ingresoPorMes = [];
         concepto = tableIngresos.rows[i].cells[1].innerHTML;
         for (let j = 2; j < tableIngresos.rows[0].cells.length - 1; j++) {
@@ -36,7 +35,7 @@ const guardarTodo = async (event) => {
             ingresoPorMes,
             id_presupuesto_front
         }
-        await post(`${localhost}/ingresos`,data);
+        await api.hacerFetch('POST', 'ingresos', data, token);
     }
     /* POST constos directos*/
     const tableCostosDirectos = document.getElementById('tableCostosDirectos');
@@ -55,7 +54,7 @@ const guardarTodo = async (event) => {
                 cantidad,
                 id_presupuesto_front
             }
-            await post(`${localhost}/costos-directos`,data);
+            await api.hacerFetch('POST', 'costos-directos', data, token);
         }        
     }
     /* POST GASTOS ADM*/
@@ -75,7 +74,7 @@ const guardarTodo = async (event) => {
                 cantidad,
                 id_presupuesto_front
             }
-            await post(`${localhost}/costos-adm`,data);
+            await api.hacerFetch('POST', 'costos-adm', data, token);
         }        
     }
     /* POST RECURSOS */
@@ -95,23 +94,8 @@ const guardarTodo = async (event) => {
                 porcentaje,
                 id_presupuesto_front
             }
-            await post(`${localhost}/recursos`,data);
+            await api.hacerFetch('POST', 'recursos', data, token);
         }        
     }
     window.location.replace("./index.html");
-}
-
-async function post(url = '', data = {}) {
-    try {
-        // Opciones por defecto estan marcadas con un *
-        const response = await fetch(url, {
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            headers: {
-            'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data) // body data type must match "Content-Type" header
-        });
-    } catch (err) {
-        console.log(err);
-    }
 }

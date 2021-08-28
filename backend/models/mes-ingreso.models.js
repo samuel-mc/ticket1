@@ -7,7 +7,7 @@ const MesIgreso = db.define('mes_ingreso', {
         type: Sequelize.STRING,
         allowNull: false,
         references: {
-            model: 'ingresos',
+            model: 'ingresos',  //Llave foranea que hace referencia a la tabla ingresos.
             key: 'id_ingreso'
         }
     },

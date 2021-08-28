@@ -1,14 +1,16 @@
 const { usuarioModel } = require('../models/usuario.models');
 
+/* Clase para trabajar con un usuario */
 class Usuario {
     constructor (id_usuario) {
         this.id_usuario = id_usuario;
     }
 
+    /* Metodo para guardar el usuario en la base de datos */
     darDeAlta (nombre, apellidos, email, password) {
         try {
             usuarioModel().create({
-                id_usuario: this.id_usuario,
+                id_usuario: this.id_usuario, //Usamos el id dado al instanciar la clase
                 nombre,
                 apellidos,
                 email,
@@ -19,6 +21,7 @@ class Usuario {
         }
     }
 
+    /* Metodo para obtener un usuario de la base de datos */
     obtener () {        
         try {
             const usuario = usuarioModel().findOne({ where: { id_usuario: this.id_usuario } });
@@ -28,6 +31,7 @@ class Usuario {
         }
     }
 
+     /* Metodo para actualizar la informacion de un usuario */   
     actualizar (nombre, apellidos, email) {
         try {
             usuarioModel().update({
@@ -44,10 +48,12 @@ class Usuario {
         }
     }
 
+    /* Metodo para borrar de manera logica a cierto usuario */
     darDeBaja () {
         usuarioModel().update({ eliminado: 1 }, { where: { id_usuario: this.id_usuario } });
     }
 
+    /* Metodo para actualizar la contraseña de un usuario */
     cambiarContraseña (password) {
         try {
             usuarioModel().update({ password },{ where: { id_usuario: this.id_usuario } });
@@ -57,6 +63,7 @@ class Usuario {
     }
 }
 
+/* Regresa un conjunto de usuarios */
 const obtenerUsuarios = () => {
     try {
         const usuarios = usuarioModel().findAll({
@@ -70,6 +77,7 @@ const obtenerUsuarios = () => {
     }
 }
 
+/* Busca un usuario de acuerdo a un email */
 const encontrarPorEmail = (email) => {
     try {
         const usuario = usuarioModel().findOne({ where: { email } });
