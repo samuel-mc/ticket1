@@ -3,22 +3,18 @@ const db = require('../db/conexion');
 
 /* Configuracion correspondiente al modelo de un ingreso . */
 const CostoDirecto = db.define('costo_directo', {
-    id_costodirecto: {
+    id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    concepto: {
+    mes: {
         type: Sequelize.STRING,
         allowNull: false
     },
-    id_presupuesto: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        references: {
-            model: 'presupuestos', //Llave foranea que hace referencia a la tabla presupuestos.
-            key: 'id_presupuesto'
-        }
+    cantidad: {
+        type: Sequelize.FLOAT,
+        allowNull: false
     },
     
     createdAt: Sequelize.DATE,
