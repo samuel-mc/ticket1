@@ -32,7 +32,8 @@ const obtenerUnPresupuesto = async (req, res) => {
     const id_presupuesto = req.params.id;
     const presupuesto = new Presupuesto(id_presupuesto);
     try {
-        res.status(200).json(presupuesto.obtener());
+        const presupuestoObtenido = await presupuesto.obtener()
+        res.status(200).json(presupuestoObtenido);
     } catch (err) {
         res.status(400).json({ 'message': 'Problema al obtener el presupuesto: ' + err.message });
     }
@@ -101,11 +102,12 @@ const actualizarIngresos = async (req, res) => {
 
 /* Crea un nuevo costo directo */
 const crearCostoDirecto = async (req, res) => {
-    const { concepto, mes, cantidad, id_presupuesto_front } = req.body;
+    const { concepto, costosDirPorMes, id_presupuesto_front } = req.body;
     const id_presupuesto = id_presupuesto_front + 'mx-1609';
+    const id_costodirecto = uuidv4();
     const presupuesto = new Presupuesto(id_presupuesto);
     try {
-        await presupuesto.agregarCostosDirectos(concepto, mes, cantidad);
+        await presupuesto.agregarCostosDirectos(id_costodirecto, concepto, costosDirPorMes);
         res.status(201).json({ 'message': 'Costo directo agregado con éxito.' });
     } catch (err) {
         res.status(400).json({ 'message': 'Problema al crear el costo directo: ' + err.message });
@@ -125,10 +127,10 @@ const obtenerCostoDirecto = async (req, res) => {
 
 const actualizarCostosDirectos = async (req, res) => {
     const id = req.params.id;
-    const { concepto, mes, cantidad } = req.body;
+    const { concepto, costosDirPorMes } = req.body;
     try {
         console.log('Costos dir');
-        await Presupuesto.actualizarCostos('dir', id, concepto, mes, cantidad);
+        await Presupuesto.actualizarCostos('dir', id, concepto, costosDirPorMes);
         res.status(200).json({ 'message': 'Costo directo actualizado'})
     } catch (err) {
         res.status(400).json({ 'message': 'Error al actualizar: ' + err.message });
@@ -138,14 +140,15 @@ const actualizarCostosDirectos = async (req, res) => {
 
 /* Crea un nuevo costo administrativo */
 const crearCostoAdm = async (req, res) => {
-    const { concepto, mes, cantidad, id_presupuesto_front } = req.body;
+    const { concepto, costosAdmPorMes, id_presupuesto_front } = req.body;
     const id_presupuesto = id_presupuesto_front + 'mx-1609';
+    const id_costoadm = uuidv4();
     const presupuesto = new Presupuesto(id_presupuesto);
     try {
-        await presupuesto.agregarCostosAdmin(concepto, mes, cantidad);
-        res.status(201).json({ 'message': 'Costo administrativo agregado con éxito.' });
+        await presupuesto.agregarCostosAdm(id_costoadm, concepto, costosAdmPorMes);
+        res.status(201).json({ 'message': 'Costo directo agregado con éxito.' });
     } catch (err) {
-        res.status(400).json({ 'message': 'Problema al crear el costo administrativo: ' + err.message});
+        res.status(400).json({ 'message': 'Problema al crear el costo directo: ' + err.message });
     }
 }
 
@@ -175,11 +178,12 @@ const actualizarCostoAdm = async (req, res) => {
 
 /* Crea un nuevo recurso */
 const crearRecurso = async (req, res) => {
-    const {  rol, costo, mes, porcentaje, id_presupuesto_front} = req.body;
-    const id_presupuesto = id_presupuesto_front + 'mx-1609'; 
+    const { rol, costo, recursosPorMes, id_presupuesto_front} = req.body;
+    const id_presupuesto = id_presupuesto_front + 'mx-1609';
+    const id_recurso = uuidv4();
     const presupuesto = new Presupuesto(id_presupuesto);
     try {
-        await presupuesto.agregarRecurso(rol, costo, mes, porcentaje);
+        await presupuesto.agregarRecurso(id_recurso, rol, costo, recursosPorMes);
         res.status(201).json({ 'message': 'Recurso agregado con exito.' });
     } catch (err) {
         res.status(400).json({ 'message': 'Problema al crear el recurso: ' + err.message  });
@@ -199,10 +203,10 @@ const obtenerRecursos = async (req, res) => {
 }
 
 const actualizarRecursos = async (req, res) => {
-    const id_recursos = req.params.id;
-    const { concepto, mes, cantidad } = req.body;
+    const id_recurso = req.params.id;
+    const { rol, costo, recursosPorMes } = req.body;
     try {
-        await Presupuesto.actualizarCostos('adm', id, concepto, mes, cantidad);
+        await Presupuesto.actualizarRecurso(id_recurso, rol, costo, recursosPorMes);
         res.status(200).json({ 'message': 'Costo administrativo actualizado'})
     } catch (err) {
         res.status(400).json({ 'message': 'Error al actualizar: ' + err.message });

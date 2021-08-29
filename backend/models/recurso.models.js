@@ -4,23 +4,15 @@ const db = require('../db/conexion');
 /* Configuracion correspondiente al modelo de un ingreso . */
 const Recurso = db.define('recurso', {
     id_recurso: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         primaryKey: true,
-        autoIncrement: true
+        allowNull: false
     },
     rol: {
         type: Sequelize.STRING,
         allowNull: false
     },
     costo: {
-        type: Sequelize.FLOAT,
-        allowNull: false
-    },
-    mes: {
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    porcentaje: {
         type: Sequelize.FLOAT,
         allowNull: false
     },

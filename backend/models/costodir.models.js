@@ -4,9 +4,9 @@ const db = require('../db/conexion');
 /* Configuracion correspondiente al modelo de un ingreso . */
 const CostoDirecto = db.define('costo_directo', {
     id_costodirecto: {
-        type: Sequelize.INTEGER,
         primaryKey: true,
-        autoIncrement: true
+        type: Sequelize.STRING,
+        allowNull: false
     },
     concepto: {
         type: Sequelize.STRING,
@@ -25,7 +25,7 @@ const CostoDirecto = db.define('costo_directo', {
     updatedAt: Sequelize.DATE
 }) ;
 
-/* Funcion que (si es necesario) crea la tabla usuarios */
+// /* Funcion que (si es necesario) crea la tabla usuarios */
 // CostoDirecto.sync().then( () => {
 //     console.log('Costo Directo Creada');
 // })

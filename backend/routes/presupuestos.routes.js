@@ -38,7 +38,7 @@ const { validarToken } = require('../auth/middlewares/token.midd');
 /* CRUD presupuestos y los campos que se envian con el */
 app.post('/presupuesto', validarToken, checkDatosPresupuesto, crearPresupuesto); //Crea un nuevo presupuesto
 app.get('/presupuesto', validarToken, obtenerPresupuestos); //Obtiene un conjunto de presupuestos
-app.get('/presupuesto/:id', validarToken, obtenerUnPresupuesto); // Obtiene un solo presupuesto
+app.get('/presupuesto/:id', obtenerUnPresupuesto); // Obtiene un solo presupuesto
 app.put('/presupuesto/:id', validarToken, actualizarPresupuesto); // Actualiza la informacion de presupuesto
 app.delete('/presupuesto/:id', validarToken, eliminarPresupuestos); // Elimina cierto presupuesto. 
 
@@ -55,6 +55,6 @@ app.get('/costos-adm/:id', validarToken, obtenerCostoAdm);//Obtiene un conjunto 
 app.put('/costos-adm/:id', validarToken, actualizarCostoAdm);
 
 app.post('/recursos', validarToken, crearRecurso); //Crea un nuevo recurso
-app.get('/recursos/:id', validarToken, obtenerRecursos); //Obtiene un conjunto te recursos.
+app.get('/recursos/:id', obtenerRecursos); //Obtiene un conjunto te recursos.
 app.put('/recursos/:id', actualizarRecursos); //
 module.exports = app;

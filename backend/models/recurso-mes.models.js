@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const db = require('../db/conexion');
 
 /* Configuracion correspondiente al modelo de un ingreso . */
-const CostoDirectoMes = db.define('costo_directo_mes', {
+const RecursoMes = db.define('recurso_mes', {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -12,16 +12,16 @@ const CostoDirectoMes = db.define('costo_directo_mes', {
         type: Sequelize.STRING,
         allowNull: false
     },
-    cantidad: {
+    porcentaje: {
         type: Sequelize.FLOAT,
         allowNull: false
     },
-    id_costodirecto: {
+    id_recurso: {
         type: Sequelize.STRING,
         allowNull: false,
         references: {
-            model: 'costo_directos',  //Llave foranea que hace referencia a la tabla ingresos.
-            key: 'id_costodirecto'
+            model: 'recursos',  //Llave foranea que hace referencia a la tabla presupuestos.
+            key: 'id_recurso'
         }
     },
     
@@ -30,8 +30,8 @@ const CostoDirectoMes = db.define('costo_directo_mes', {
 }) ;
 
 /* Funcion que (si es necesario) crea la tabla usuarios */
-// CostoDirectoMes.sync().then( () => {
-//     console.log('Costo Directo Mes Creada');
+// RecursoMes.sync().then( () => {
+//     console.log('RecursoMes Creada');
 // })
 
-module.exports = { CostoDirectoMes };
+module.exports = { RecursoMes };

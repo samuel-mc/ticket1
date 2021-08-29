@@ -4,8 +4,11 @@ const { presupuestoModel } = require('../models/presupuesto.models');
 const { ingresoModel } = require('../models/ingreso.models');
 const { MesIgreso } = require('../models/ingreso-mes.models');
 const { CostoDirecto } = require('../models/costodir.models');
+const { CostoDirectoMes } = require('../models/costodir-mes.models');
 const { CostoAdm } = require('../models/costoadm.models');
+const { CostoAdmMes } = require('../models/costoadm-mes.models');
 const { Recurso } = require('../models/recurso.models');
+const { RecursoMes } = require('../models/recurso-mes.models');
 
 /* Clase para implementar el modelo presupuesto */
 class Presupuesto {
@@ -83,13 +86,13 @@ class Presupuesto {
     async obtenerIngresos () {
         try {
             const ingresos = await ingresoModel.findAll({ where: { id_presupuesto: this.id_presupuesto }});
-            let ingresosPorMes = []
+            let entradas = []
             for (let i = 0; i < ingresos.length; i++) {
                 const element = ingresos[i];
                 const ingresoPorMes = await MesIgreso.findAll({where: { id_ingreso: element.id_ingreso }});
-                ingresosPorMes.push(ingresoPorMes);
+                entradas.push(ingresoPorMes);
             }
-            return { ingresos, ingresosPorMes };
+            return { ingresos, entradas };
         } catch (err) {
             throw new Error(err);
         }
@@ -109,76 +112,148 @@ class Presupuesto {
             throw new Error(err);
         }
     }
-    agregarCostosDirectos (concepto, mes, cantidad) {
+    agregarCostosDirectos (id_costodirecto, concepto, costosDirPorMes) {
         try {
             CostoDirecto.create({
+                id_costodirecto,
                 concepto,
-                mes,
-                cantidad,
                 id_presupuesto: this.id_presupuesto,
             });
+            costosDirPorMes.map(async function(costosDirPorMes) { // Ingresamos en la bd el conjunto de costos recibidos
+                await CostoDirectoMes.create({
+                    id_costodirecto,
+                    mes: costosDirPorMes.mes,
+                    cantidad: costosDirPorMes.cantidad
+                });
+            });  
         } catch (err) {
             throw new Error(err);
         }
     }
 
-    obtenerCostosDirectos() {
+    async obtenerCostosDirectos() {
         try {
-            const costoDirecto = CostoDirecto.findAll({ where: { id_presupuesto: this.id_presupuesto }})
-            return costoDirecto;
+            const costosDirectos = await CostoDirecto.findAll({ where: { id_presupuesto: this.id_presupuesto }})
+            let entradas = []
+            for (let i = 0; i < costosDirectos.length; i++) {
+                const element = costosDirectos[i];
+                const costoPorMes = await CostoDirectoMes.findAll({where: { id_costodirecto: element.id_costodirecto }});
+                entradas.push(costoPorMes);
+            }
+            return { costosDirectos, entradas };
         } catch (err) {
             throw new Error(err);
         }
     }
 
-    agregarCostosAdmin (concepto, mes, cantidad) {
+    agregarCostosAdm (id_costoadm, concepto, costosAdmPorMes) {
         try {
             CostoAdm.create({
+                id_costoadm,
                 concepto,
-                mes,
-                cantidad,
                 id_presupuesto: this.id_presupuesto,
             });
+            costosAdmPorMes.map(async function(costosAdmPorMes) { // Ingresamos en la bd el conjunto de costos recibidos
+                await CostoAdmMes.create({
+                    id_costoadm,
+                    mes: costosAdmPorMes.mes,
+                    cantidad: costosAdmPorMes.cantidad
+                });
+            });  
         } catch (err) {
             throw new Error(err);
         }
     }
 
-    obtenerCostosAdmin() {
+    async obtenerCostosAdmin() {
         try {
-            const costosAdm = CostoAdm.findAll({ where: { id_presupuesto: this.id_presupuesto }})
-            return costosAdm;
+            const costosAdm = await CostoAdm.findAll({ where: { id_presupuesto: this.id_presupuesto }})
+            let entradas = []
+            for (let i = 0; i < costosAdm.length; i++) {
+                const element = costosAdm[i];
+                const costoPorMes = await CostoAdmMes.findAll({where: { id_costoadm: element.id_costoadm }});
+                entradas.push(costoPorMes);
+            }
+            return { costosAdm, entradas };
         } catch (err) {
             throw new Error(err);
         }
     }
 
-    static actualizarCostos(tipo, id, concepto, mes, cantidad) {
+    static actualizarCostos(tipo, id, concepto, costosPorMes) {
         try {
-            tipo == 'adm' ? CostoAdm.update({ concepto, mes, cantidad },{ where: { id_costoadm: id }}) : CostoDirecto.update({concepto, mes, cantidad}, { where: { id_costodirecto: id }});
+            if(tipo == 'adm') {
+                CostoAdm.update({ concepto },{ where: { id_costoadm: id }})
+                costosPorMes.map(async function(costosPorMes) { // Ingresamos en la bd el conjunto de costos recibidos
+                    await CostoAdmMes.update({
+                        mes: costosPorMes.mes,
+                        cantidad: costosPorMes.cantidad
+                    } , { where: { id: costosPorMes.id }}
+                    );
+                });
+            } else {
+                CostoDirecto.update({ concepto }, { where: { id_costodirecto: id }});
+                costosPorMes.map(async function(costosPorMes) { // Ingresamos en la bd el conjunto de costos recibidos
+                    await CostoDirectoMes.update({
+                        mes: costosPorMes.mes,
+                        cantidad: costosPorMes.cantidad
+                    } , { where: { id: costosPorMes.id }}
+                    );
+                });
+            }
         } catch (err) {
             throw new Error(err);
         }
     }
 
-    agregarRecurso(rol, costo, mes, porcentaje) {
+    agregarRecurso(id_recurso, rol, costo, recursosPorMes) {
         try {
             Recurso.create({
+                id_recurso,
                 rol,
                 costo,
-                mes,
-                porcentaje,
                 id_presupuesto: this.id_presupuesto
             });
+            recursosPorMes.map(async function(recursosPorMes) { // Ingresamos en la bd el conjunto de costos recibidos
+                await RecursoMes.create({
+                    id_recurso,
+                    mes: recursosPorMes.mes,
+                    porcentaje: recursosPorMes.porcentaje
+                });
+            });  
         } catch (err) {
             throw new Error(err);
         }
     }
 
-    obtenerRecursos () {
+    async obtenerRecursos () {
         try {
-            const recursos = Recurso.findAll({ where: { id_presupuesto: this.id_presupuesto }});
-            return recursos;
+            const recursos = await Recurso.findAll({ where: { id_presupuesto: this.id_presupuesto }})
+            let entradas = []
+            for (let i = 0; i < recursos.length; i++) {
+                const element = recursos[i];
+                const recursosPorMes = await RecursoMes.findAll({where: { id_recurso: element.id_recurso }});
+                entradas.push(recursosPorMes);
+            }
+            return { recursos, entradas };
+        } catch (err) {
+            throw new Error(err);
+        }
+    }
+    static actualizarRecurso(id_recurso, rol, costo, recursosPorMes) {
+        try {
+            Recurso.update({
+                rol,
+                costo
+            } , {
+                where: { id_recurso }
+            });
+            recursosPorMes.map(async function(recursosPorMes) { // Ingresamos en la bd el conjunto de costos recibidos
+                await RecursoMes.update({
+                    mes: recursosPorMes.mes,
+                    porcentaje: recursosPorMes.porcentaje
+                } , { where: { id: recursosPorMes.id } });
+            });  
         } catch (err) {
             throw new Error(err);
         }

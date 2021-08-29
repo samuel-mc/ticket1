@@ -16,16 +16,14 @@ module.exports.altaIngresos = Joi.object().keys({
 /* Valida los datos requeridos para dar de alta un costo directo */
 module.exports.altaCostosDirectos = Joi.object().keys({
     concepto: Joi.string().min(3).max(255).required(),
-    mes: Joi.string().min(4).max(255).required(),
-    cantidad: Joi.number().required(),
+    costosDirPorMes: Joi.array().required(),
     id_presupuesto_front: Joi.string().min(3).max(255).required()
 })
 
 /* Valida los datos requeridos para dar de alta un costo administrativo */
 module.exports.altaCostosAdm = Joi.object().keys({
     concepto: Joi.string().min(3).max(255).required(),
-    mes: Joi.string().min(4).max(255).required(),
-    cantidad: Joi.number().required(),
+    costosAdmPorMes: Joi.array().required(),
     id_presupuesto_front: Joi.string().min(3).max(255).required()
 })
 
