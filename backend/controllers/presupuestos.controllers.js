@@ -92,6 +92,7 @@ const obtenerIngresos = async (req, res) => {
 const actualizarIngresos = async (req, res) => {
     const id = req.params.id;
     const { concepto, ingresoPorMes } = req.body;
+    console.log(concepto);
     try {
         await Presupuesto.actualizarIngresos(id, concepto, ingresoPorMes)
         res.status(200).send('Ingresos actualizados')
