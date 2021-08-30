@@ -43,8 +43,8 @@ app.put('/presupuesto/:id', validarToken, actualizarPresupuesto); // Actualiza l
 app.delete('/presupuesto/:id', validarToken, eliminarPresupuestos); // Elimina cierto presupuesto. 
 
 app.post('/ingresos', validarToken, checkDatosIngresos, crearIngreso); //Crea un nuevo ingresa
-app.get('/ingresos/:id', obtenerIngresos); //Obtiene los ingresos segun el id del presupuesto
-app.put('/ingresos/:id', actualizarIngresos);
+app.get('/ingresos/:id', validarToken, obtenerIngresos); //Obtiene los ingresos segun el id del presupuesto
+app.put('/ingresos/:id', validarToken, actualizarIngresos);
 
 app.post('/costos-directos', validarToken, checkDatosCostosDirectos, crearCostoDirecto); //Crea un nuevo costo directo.
 app.get('/costos-directos/:id', validarToken, obtenerCostoDirecto); //Obtiene un conjunto de costos directos segun el id del presupuesto
@@ -55,6 +55,6 @@ app.get('/costos-adm/:id', validarToken, obtenerCostoAdm);//Obtiene un conjunto 
 app.put('/costos-adm/:id', validarToken, actualizarCostoAdm);
 
 app.post('/recursos', validarToken, crearRecurso); //Crea un nuevo recurso
-app.get('/recursos/:id', obtenerRecursos); //Obtiene un conjunto te recursos.
-app.put('/recursos/:id', actualizarRecursos); //
+app.get('/recursos/:id', validarToken, obtenerRecursos); //Obtiene un conjunto te recursos.
+app.put('/recursos/:id', validarToken,  actualizarRecursos); //
 module.exports = app;
